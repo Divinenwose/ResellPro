@@ -1,0 +1,276 @@
+.listed-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: "Montserrat";
+    font-weight: 600;
+    line-height: 43.88px;
+    letter-spacing: 0%;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .dropdown {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 182;
+    height: 44;
+    left: 1001px;
+    gap: 20px;
+    border-radius: 8px;
+    border-width: 2px;
+    padding-top: 10px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    border: 2px solid #8A8A8A;
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.5px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+
+  .dropdown-selected{
+    width: 117;
+    height: 44;
+    top: 711px;
+    left: 1263px;
+    gap: 20px;
+    border-radius: 8px;
+    border-width: 2px;
+    padding-top: 10px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    border: 2px solid #8A8A8A;
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.5px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 14px;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: left;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 180px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+  }
+  
+  .card-title {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24.38px;
+    letter-spacing: 0%;
+    color: #000;
+    margin-left: 5px;
+  }
+  
+  .card-price {
+    color: #FF9738A8;
+    font-size: 16px;
+    font-family: "Montserrat";
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24.38px;
+    letter-spacing: 0%;
+    margin-left: 5px;
+  }
+
+  .card-description{
+    font-family: Montserrat;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.48px;
+    letter-spacing: 0%;
+    margin-left: 5px;
+    color:#A9A5A5;
+    padding-top: 13px;
+  }
+  
+  .card-state {
+    font-size: 14px;
+    color: #FF9738A8;
+    margin-left: 5px;
+    padding-block: 6px;
+  }
+  
+
+  .writeup{
+    display: flex;
+    gap: 75px;
+    margin-top: 150px;
+  }
+
+  .left h2{
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 59px;
+    letter-spacing: 0%;
+    width: 478px;
+  }
+
+  .left p{
+    font-family: Montserrat;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0%;
+    width: 435px;
+    margin-top: 8px;
+  }
+
+  .unlock-link{
+    padding-top: 23px;
+  }
+
+  .unlock-link a{
+    width: 187px;
+    height: 44px;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    text-decoration: none;
+    background-color: #FF9738;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24.38px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #fff;
+  }
+
+  .right-img{
+    width: 610px;
+    height: 410px;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 1024px) {
+    .listed-container {
+      padding: 15px;
+    }
+  
+    .header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .filters {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  
+    .writeup {
+      flex-direction: column;
+      text-align: center;
+      gap: 40px;
+      margin-top: 100px;
+    }
+  
+    .left h2, .left p {
+      width: 100%;
+    }
+  
+    .right-img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .title {
+      font-size: 32px;
+    }
+  
+    .filters {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .dropdown, .dropdown-selected {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .card {
+      text-align: center;
+    }
+  
+    .card-title, .card-price {
+      font-size: 18px;
+    }
+  
+    .unlock-link a {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 380px) {
+    .header{
+      flex-direction: row;
+    }
+    .title {
+      font-size: 24px;
+    }
+  
+    .card-title {
+      font-size: 16px;
+    }
+  
+    .card-price {
+      font-size: 14px;
+    }
+  
+    .writeup {
+      gap: 20px;
+    }
+  }
+  
