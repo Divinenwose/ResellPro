@@ -1,11 +1,12 @@
 const express = require("express");
 const { User } = require("../models/User");
 const router = express.Router();
+const { buyerMiddleware } = require("../middlewares/roleMiddleware");
 
-router.get("/", async (req, res) => {
-    const users = await User.find();
+router.get("/", buyerMiddleware, async (req, res) => {
+    const users = await User.find().select("-password -_id");
 
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: "Users fetched successfully",
         data: users

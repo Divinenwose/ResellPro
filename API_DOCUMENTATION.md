@@ -33,13 +33,11 @@ This document provides an overview of the API endpoints available in the ReSellP
           "name": "John Doe",
           "email": "john@example.com",
           "phone": "",
-          "password": null,
           "role": "buyer",
           "is_verified_email": false,
           "is_verified_phone": false,
           "phone_verification_code": null,
           "email_verification_code": "123456",
-          "_id": "60cf601a372f86ecf68759e1",
           "created_at": "2025-03-10T21:56:42.443Z",
           "updated_at": "2025-03-10T21:56:42.443Z",
           "__v": 0
@@ -57,7 +55,8 @@ This document provides an overview of the API endpoints available in the ReSellP
   ```json
   {
     "email": "john@example.com",
-    "password": "password123"
+    "password": "password123",
+    "role": "buyer"
   }
   ```
 - **Response**:
@@ -72,13 +71,11 @@ This document provides an overview of the API endpoints available in the ReSellP
           "name": "John Doe",
           "email": "john@example.com",
           "phone": "",
-          "password": null,
           "role": "buyer",
           "is_verified_email": true,
           "is_verified_phone": false,
           "phone_verification_code": null,
           "email_verification_code": null,
-          "_id": "60cf601a372f86ecf68759e1",
           "created_at": "2025-03-10T21:56:42.443Z",
           "updated_at": "2025-03-10T21:56:42.443Z",
           "__v": 0
@@ -92,6 +89,10 @@ This document provides an overview of the API endpoints available in the ReSellP
 ### POST /api/auth/logout
 
 - **Description**: Log out the current user.
+- **Request Header**:
+  ```
+  Authorization: Bearer <token>
+  ```
 - **Response**:
   - **200 OK**:
     ```json
@@ -100,6 +101,37 @@ This document provides an overview of the API endpoints available in the ReSellP
       "message": "User logged out successfully",
       "status_code": 200
     }
+    ```
+### Authentication Middleware
+
+- **Description**: Middleware to check if the user is authenticated.
+- **Request Header**:
+  ```
+  Authorization: Bearer <token>
+  ```
+  - **400 Bad Request**: 
+    ```json
+      {
+        "success": false,  
+        "message": "No token provided",
+        "status_code": 400
+      }
+    ```
+  - **401 Unauthorized**:
+    ```json
+      {
+        "success": false,  
+        "message": "Token expired! Please log in again.",
+        "status_code": 401
+      }
+    ```
+  - **403 Forbidden**:
+    ```json
+      {
+        "success": false,  
+        "message": "Access denied! One of these roles required: admin, seller, buyer",
+        "status_code": 403
+      }
     ```
 
 ### GET /api/auth/google
@@ -122,13 +154,11 @@ This document provides an overview of the API endpoints available in the ReSellP
           "name": "Farouq Akinola",
           "email": "akinolaakinkunmifa@gmail.com",
           "phone": "",
-          "password": null,
           "role": "buyer",
           "is_verified_email": true,
           "is_verified_phone": false,
           "phone_verification_code": null,
           "email_verification_code": null,
-          "_id": "67cf601a372f86ecf68759e1",
           "created_at": "2025-03-10T21:56:42.443Z",
           "updated_at": "2025-03-10T21:56:42.443Z",
           "__v": 0
@@ -157,14 +187,12 @@ This document provides an overview of the API endpoints available in the ReSellP
           "email": "john@example.com",
           "phone": "",
           "role": "buyer",
-          "_id": "60cf601a372f86ecf68759e1"
         },
         {
           "name": "Jane Smith",
           "email": "jane@example.com",
           "phone": "",
           "role": "seller",
-          "_id": "60cf601a372f86ecf68759e2"
         }
       ]
     }
