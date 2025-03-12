@@ -208,17 +208,15 @@ This document provides an overview of the API endpoints available in the ReSellP
 
 - **Description**: Create a new listing.
 - **Request Body**:
-  ```json
-  {
-    "title": "Sample Listing",
-    "description": "This is a sample listing.",
-    "price": 100.00,
-    "category_id": "60cf601a372f86ecf68759e1",
-    "condition": "new",
-    "isEcoFriendly": true,
-    "autoRelist": false
-  }
-  ```
+  - **Form Data**:
+    - `title`: String
+    - `description`: String
+    - `price`: Number
+    - `category_id`: String (ObjectId)
+    - `condition`: String (one of "new", "used", "like_new")
+    - `isEcoFriendly`: Boolean
+    - `autoRelist`: Boolean
+    - `images`: Array of image files (JPEG, PNG, WEBP)
 - **Response**:
   - **201 Created**:
     ```json
@@ -245,11 +243,18 @@ This document provides an overview of the API endpoints available in the ReSellP
         "isEcoFriendly": true,
         "status": "active",
         "createdAt": "2025-03-10T21:56:42.443Z",
-        "updatedAt": "2025-03-10T21:56:42.443Z"
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
       }
     }
     ```
-  - **400 Bad Request**: Validation error or category not found.
+  - **400 Bad Request**: Validation error, category not found, or invalid file type.
 
 ### GET /api/listings
 
@@ -281,7 +286,14 @@ This document provides an overview of the API endpoints available in the ReSellP
           "isEcoFriendly": true,
           "status": "active",
           "createdAt": "2025-03-10T21:56:42.443Z",
-          "updatedAt": "2025-03-10T21:56:42.443Z"
+          "updatedAt": "2025-03-10T21:56:42.443Z",
+          "images": [
+            {
+              "_id": "60cf601a372f86ecf68759e4",
+              "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+              "original_name": "sample.jpg"
+            }
+          ]
         }
       ]
     }
@@ -316,7 +328,14 @@ This document provides an overview of the API endpoints available in the ReSellP
         "isEcoFriendly": true,
         "status": "active",
         "createdAt": "2025-03-10T21:56:42.443Z",
-        "updatedAt": "2025-03-10T21:56:42.443Z"
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
       }
     }
     ```
@@ -357,7 +376,14 @@ This document provides an overview of the API endpoints available in the ReSellP
         "isEcoFriendly": false,
         "status": "active",
         "createdAt": "2025-03-10T21:56:42.443Z",
-        "updatedAt": "2025-03-10T21:56:42.443Z"
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
       }
     }
     ```
@@ -394,7 +420,14 @@ This document provides an overview of the API endpoints available in the ReSellP
         "isEcoFriendly": true,
         "status": "active",
         "createdAt": "2025-03-10T21:56:42.443Z",
-        "updatedAt": "2025-03-10T21:56:42.443Z"
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
       }
     }
     ```
@@ -477,7 +510,14 @@ This document provides an overview of the API endpoints available in the ReSellP
             "isEcoFriendly": true,
             "status": "active",
             "createdAt": "2025-03-10T21:56:42.443Z",
-            "updatedAt": "2025-03-10T21:56:42.443Z"
+            "updatedAt": "2025-03-10T21:56:42.443Z",
+            "images": [
+              {
+                "_id": "60cf601a372f86ecf68759e4",
+                "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+                "original_name": "sample.jpg"
+              }
+            ]
           }
         ]
       }

@@ -6,4 +6,4 @@
 /backend/src/config/config.env.development
 /backend/src/config/config.env.production
 /backend/.env
-
+/backend/uploads

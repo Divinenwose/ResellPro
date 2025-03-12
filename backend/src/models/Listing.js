@@ -90,7 +90,8 @@ const validateListing = (listing) => {
         isEcoFriendly: Joi.boolean().required(),
         status: Joi.string().valid("active", "expired", "sold", "removed", "inactive"),
         expirationDate: Joi.date(),
-        autoRelist: Joi.boolean().required()
+        autoRelist: Joi.boolean().required(),
+        images: Joi.array().items(Joi.string())
     });
     return schema.validate(listing);
 };
