@@ -1,44 +1,66 @@
-import React from "react";
-import "./Footer.css"
-import FooterLogo from "../../assets/fLogo.png"
-import Instagram_icon from "../../assets/instagram_icon.png"
-import Facebook_icon from "../../assets/facebook_icon.png"
-import Twitter_icon from "../../assets/twitter_icon.png"
-import effect1 from "../../assets/effect1.png"
-import effect2 from "../../assets/effect2.png"
-import effect3 from "../../assets/effect3.png"
-
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom"; // ✅ Import useLocation
+import "./Footer.css";
+import FooterLogo from "../../assets/flogo.png";
+import Twitter_icon from "../../assets/twitter.png";
+import Instagram_icon from "../../assets/instagram.png";
+import Facebook_icon from "../../assets/facebook.png";
+import effect1 from "../../assets/effect1.png";
+import effect2 from "../../assets/effect2.png";
+import effect3 from "../../assets/effect3.png";
 
 const Footer = () => {
-    return(
+    const location = useLocation();
+
+    // ✅ Scroll to top when the route changes
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [location.pathname]);
+
+    return (
         <div className="footer">
             <div className="footer-details">
                 <div className="footer-logo-container">
-                    <img src={FooterLogo} className="footer-logo" alt="" />
+                    <img src={FooterLogo} className="footer-logo" alt="Footer Logo" />
                 </div>
                 <div className="footer-links">
                     <ul className="links">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">Featured Categories</a></li>
-                        <li><a href="">About Us</a></li>
+                        <li className={location.pathname === "/" ? "active" : ""}>
+                            <Link to="/">Home</Link>
+                        </li>
+                        <li className={location.pathname === "/about" ? "active" : ""}>
+                            <Link to="/about">About us</Link>
+                        </li>
+                        <li className={location.pathname === "/products" ? "active" : ""}>
+                            <Link to="/products">Products</Link>
+                        </li>
+                        <li className={location.pathname === "/categories" ? "active" : ""}>
+                            <Link to="/categories">Featured categories</Link>
+                        </li>
                     </ul>
                 </div>
                 <div className="social-icons">
-                    <a href=""><img src={Facebook_icon} alt="" className="icons" /></a>
-                    <a href=""><img src={Instagram_icon} alt="" className="icons" /></a>
-                    <a href=""><img src={Twitter_icon} alt="" className="icons" /></a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                        <img src={Facebook_icon} alt="Facebook" className="icons" />
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                        <img src={Instagram_icon} alt="Instagram" className="icons" />
+                    </a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                        <img src={Twitter_icon} alt="Twitter" className="icons" />
+                    </a>
                 </div>
             </div>
             <div className="effects">
-                <img src={effect1} className="effect-one" alt="" />
-                <img src={effect2} className="effect-two" alt="" />
-                <img src={effect3} className="effect-three" alt="" />
+                <img src={effect1} className="effect-one" alt="Effect 1" />
+                <img src={effect2} className="effect-two" alt="Effect 2" />
+                <img src={effect3} className="effect-three" alt="Effect 3" />
             </div>
             <div className="copywrite">
                 <p>&copy; copyright resellpro.com 2025. All Rights Reserved</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Footer;
