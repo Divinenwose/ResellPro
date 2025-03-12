@@ -23,7 +23,7 @@
 .links{
     display: flex;
     list-style: none;
-    gap: 50px;   
+    gap: 30px;   
 }
 
 .links li{
@@ -33,12 +33,13 @@
     line-height: 14.63px;
     letter-spacing: 0%;
     color: #fff;
+    padding-top: 20px;
 }
 
 .icons{
-    padding-top: 10px;
-    padding-left: 10px;
-    margin-top: 20px;
+    width: 40px;
+    margin-top: 60px;
+    padding-left: 8px;
 }
 
 

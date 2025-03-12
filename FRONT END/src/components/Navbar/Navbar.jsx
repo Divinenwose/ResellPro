@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import AuthModal from "../../components/AuthModal/Authmodal";
 import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 
 const Navbar = () => {
   const location = useLocation();
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setIsAuthOpen(false);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
   return (
     <div className="navbar">
@@ -13,6 +25,7 @@ const Navbar = () => {
           <img className="nav-logo" src={Logo} alt="Logo" />
         </Link>
       </div>
+
       <div className="nav-links-container">
         <ul className="nav-links">
           <li className={location.pathname === "/" ? "active" : ""}>
@@ -29,9 +42,22 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <div className="nav-btn">
-        <Link to="/register" className="nav-btn">Register Now</Link>
+
+      <div className="nav-btn-container">
+        {isLoggedIn ? (
+          <div className="user-menu">
+            <span className="user-icon">👤</span>
+            <ul className="dropdown">
+              <li onClick={handleLogout}>Sign Out</li>
+            </ul>
+          </div>
+        ) : (
+          <button className="nav-btn" onClick={() => setIsAuthOpen(true)}>
+            Register Now
+          </button>
+        )}
       </div>
+      {isAuthOpen && <AuthModal close={() => setIsAuthOpen(false)} />}
     </div>
   );
 };

@@ -42,11 +42,11 @@ const products = [
   { id: 8, name: "Laptop", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Phones & Accessories", price: 300000, image: item8 },
   { id: 9, name: "Blender", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Kitchen Appliances", price: 50000, image: item9 },
   { id: 10, name: "Luxury Wristwatch", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Men Fashion", price: 75000, image: item10 },
-  { id: 11, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
+  { id: 11, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Cars", price: 45000, image: item7 },
   { id: 12, name: "Skincare Set", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
-  { id: 13, name: "Apartment for Rent", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
-  { id: 14, name: "Smartphone", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
-  { id: 15, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
+  { id: 13, name: "Apartment for Rent", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Properties", price: 45000, image: item7 },
+  { id: 14, name: "Smartphone", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Phones & Accessories", price: 45000, image: item7 },
+  { id: 15, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Cars", price: 45000, image: item7 },
 ];
 
 const priceRanges = [
@@ -161,7 +161,7 @@ const CategoriesPage = () => {
               </div>
             ))
           ) : (
-            <p>No products available.</p>
+            <p className="no-products-container">No products available.</p>
           )}
         </main>
       </div>
