@@ -72,4 +72,5 @@ module.exports = {
   sellerMiddleware: roleMiddleware(["seller"]),
   buyerMiddleware: roleMiddleware(["buyer"]),
   userMiddleware: roleMiddleware(["admin", "seller", "buyer"]),
+  listingMiddleware: roleMiddleware(["admin", "seller"]),
 };
