@@ -39,7 +39,7 @@ router.post("/signup", async (req, res) => {
     const token = jwt.sign({ _id: user._id, role: user.role, email: user.email, phone: user.phone }, 
                         process.env.JWT_SECRET_KEY,
                         { expiresIn: "4h" });
-    res.status(201).json({
+    return res.status(201).json({
         success: true,
         message: "User created successfully",
         status_code: 201,
@@ -87,7 +87,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ _id: user._id, role: user.role, email: user.email, phone: user.phone }, 
                             process.env.JWT_SECRET_KEY,
                             { expiresIn: "4h" });
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: "User logged in successfully",
         status_code: 200,
@@ -123,7 +123,7 @@ router.post("/logout", async (req, res) => {
             expiresAt: new Date(decoded.exp * 1000) // Convert to milliseconds
         });
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "User logged out successfully",
             status_code: 200

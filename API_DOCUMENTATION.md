@@ -6,6 +6,8 @@ This document provides an overview of the API endpoints available in the ReSellP
 
 - [Authentication Routes](#authentication-routes)
 - [User Routes](#user-routes)
+- [Listing Routes](#listing-routes)
+- [Listing Category Routes](#listing-category-routes)
 
 ## Authentication Routes
 
@@ -102,6 +104,8 @@ This document provides an overview of the API endpoints available in the ReSellP
       "status_code": 200
     }
     ```
+  - **400 Bad Request**: No token provided or invalid token.
+
 ### Authentication Middleware
 
 - **Description**: Middleware to check if the user is authenticated.
@@ -186,17 +190,390 @@ This document provides an overview of the API endpoints available in the ReSellP
           "name": "John Doe",
           "email": "john@example.com",
           "phone": "",
-          "role": "buyer",
+          "role": "buyer"
         },
         {
           "name": "Jane Smith",
           "email": "jane@example.com",
           "phone": "",
-          "role": "seller",
+          "role": "seller"
         }
       ]
     }
     ```
+
+## Listing Routes
+
+### POST /api/listings/create
+
+- **Description**: Create a new listing.
+- **Request Body**:
+  - **Form Data**:
+    - `title`: String
+    - `description`: String
+    - `price`: Number
+    - `category_id`: String (ObjectId)
+    - `condition`: String (one of "new", "used", "like_new")
+    - `isEcoFriendly`: Boolean
+    - `autoRelist`: Boolean
+    - `images`: Array of image files (JPEG, PNG, WEBP)
+- **Response**:
+  - **201 Created**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing created successfully",
+      "status_code": 201,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e2",
+        "title": "Sample Listing",
+        "description": "This is a sample listing.",
+        "price": 100.00,
+        "category": {
+          "_id": "60cf601a372f86ecf68759e1",
+          "name": "Electronics"
+        },
+        "seller": {
+          "_id": "60cf601a372f86ecf68759e3",
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": ""
+        },
+        "condition": "new",
+        "isEcoFriendly": true,
+        "status": "active",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
+      }
+    }
+    ```
+  - **400 Bad Request**: Validation error, category not found, or invalid file type.
+
+### GET /api/listings
+
+- **Description**: Retrieve all listings.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listings fetched successfully",
+      "status_code": 200,
+      "data": [
+        {
+          "_id": "60cf601a372f86ecf68759e2",
+          "title": "Sample Listing",
+          "description": "This is a sample listing.",
+          "price": 100.00,
+          "category": {
+            "_id": "60cf601a372f86ecf68759e1",
+            "name": "Electronics"
+          },
+          "seller": {
+            "_id": "60cf601a372f86ecf68759e3",
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": ""
+          },
+          "condition": "new",
+          "isEcoFriendly": true,
+          "status": "active",
+          "createdAt": "2025-03-10T21:56:42.443Z",
+          "updatedAt": "2025-03-10T21:56:42.443Z",
+          "images": [
+            {
+              "_id": "60cf601a372f86ecf68759e4",
+              "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+              "original_name": "sample.jpg"
+            }
+          ]
+        }
+      ]
+    }
+    ```
+
+### GET /api/listings/:id
+
+- **Description**: Retrieve a specific listing by ID.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing fetched successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e2",
+        "title": "Sample Listing",
+        "description": "This is a sample listing.",
+        "price": 100.00,
+        "category": {
+          "_id": "60cf601a372f86ecf68759e1",
+          "name": "Electronics"
+        },
+        "seller": {
+          "_id": "60cf601a372f86ecf68759e3",
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": ""
+        },
+        "condition": "new",
+        "isEcoFriendly": true,
+        "status": "active",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
+      }
+    }
+    ```
+  - **404 Not Found**: Listing not found.
+
+### PUT /api/listings/:id
+
+- **Description**: Update a specific listing by ID.
+- **Request Body**:
+  ```json
+  {
+    "title": "Updated Listing",
+    "description": "This is an updated listing.",
+    "price": 150.00,
+    "category_id": "60cf601a372f86ecf68759e1",
+    "condition": "used",
+    "isEcoFriendly": false,
+    "autoRelist": true
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing updated successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e2",
+        "title": "Updated Listing",
+        "description": "This is an updated listing.",
+        "price": 150.00,
+        "category": {
+          "_id": "60cf601a372f86ecf68759e1",
+          "name": "Electronics"
+        },
+        "condition": "used",
+        "isEcoFriendly": false,
+        "status": "active",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
+      }
+    }
+    ```
+  - **400 Bad Request**: Validation error.
+  - **403 Forbidden**: Not authorized to update this listing.
+  - **404 Not Found**: Listing not found.
+
+### DELETE /api/listings/:id
+
+- **Description**: Delete a specific listing by ID.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing deleted successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e2",
+        "title": "Sample Listing",
+        "description": "This is a sample listing.",
+        "price": 100.00,
+        "category": {
+          "_id": "60cf601a372f86ecf68759e1",
+          "name": "Electronics"
+        },
+        "seller": {
+          "_id": "60cf601a372f86ecf68759e3",
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": ""
+        },
+        "condition": "new",
+        "isEcoFriendly": true,
+        "status": "active",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z",
+        "images": [
+          {
+            "_id": "60cf601a372f86ecf68759e4",
+            "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+            "original_name": "sample.jpg"
+          }
+        ]
+      }
+    }
+    ```
+  - **403 Forbidden**: Not authorized to delete this listing.
+  - **404 Not Found**: Listing not found.
+
+## Listing Category Routes
+
+### POST /api/listing-categories/create
+
+- **Description**: Create a new listing category.
+- **Request Body**:
+  ```json
+  {
+    "name": "Electronics",
+    "description": "Category for electronic items."
+  }
+  ```
+- **Response**:
+  - **201 Created**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing category created successfully",
+      "status_code": 201,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e1",
+        "name": "Electronics",
+        "description": "Category for electronic items.",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z"
+      }
+    }
+    ```
+  - **400 Bad Request**: Validation error or category already exists.
+
+### GET /api/listing-categories
+
+- **Description**: Retrieve all listing categories.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing categories fetched successfully",
+      "status_code": 200,
+      "data": [
+        {
+          "_id": "60cf601a372f86ecf68759e1",
+          "name": "Electronics",
+          "description": "Category for electronic items.",
+          "createdAt": "2025-03-10T21:56:42.443Z",
+          "updatedAt": "2025-03-10T21:56:42.443Z"
+        }
+      ]
+    }
+    ```
+
+### GET /api/listing-categories/:id
+
+- **Description**: Retrieve a specific listing category by ID, including its listings.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Category with listings fetched successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e1",
+        "name": "Electronics",
+        "description": "Category for electronic items.",
+        "listings": [
+          {
+            "_id": "60cf601a372f86ecf68759e2",
+            "title": "Sample Listing",
+            "description": "This is a sample listing.",
+            "price": 100.00,
+            "condition": "new",
+            "isEcoFriendly": true,
+            "status": "active",
+            "createdAt": "2025-03-10T21:56:42.443Z",
+            "updatedAt": "2025-03-10T21:56:42.443Z",
+            "images": [
+              {
+                "_id": "60cf601a372f86ecf68759e4",
+                "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+                "original_name": "sample.jpg"
+              }
+            ]
+          }
+        ]
+      }
+    }
+    ```
+  - **404 Not Found**: Category not found.
+
+### PUT /api/listing-categories/:id
+
+- **Description**: Update a specific listing category by ID.
+- **Request Body**:
+  ```json
+  {
+    "name": "Updated Electronics",
+    "description": "Updated category for electronic items."
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing category updated successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e1",
+        "name": "Updated Electronics",
+        "description": "Updated category for electronic items.",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z"
+      }
+    }
+    ```
+  - **400 Bad Request**: Validation error.
+  - **404 Not Found**: Listing category not found.
+
+### DELETE /api/listing-categories/:id
+
+- **Description**: Delete a specific listing category by ID.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Listing category deleted successfully",
+      "status_code": 200,
+      "data": {
+        "_id": "60cf601a372f86ecf68759e1",
+        "name": "Electronics",
+        "description": "Category for electronic items.",
+        "createdAt": "2025-03-10T21:56:42.443Z",
+        "updatedAt": "2025-03-10T21:56:42.443Z"
+      }
+    }
+    ```
+  - **404 Not Found**: Listing category not found.
 
 ## Error Handling
 

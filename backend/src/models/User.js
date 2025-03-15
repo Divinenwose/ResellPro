@@ -11,10 +11,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    phone: {
+    phone: { 
         type: String,
-        unique: false,
-        sparse: true,
+        default: null 
     },
     password: {
         type: String,
@@ -59,7 +58,7 @@ const validateUser = (user) => {
         email: Joi.string().email().required().min(6).max(255),
         password: Joi.string().required().min(6).max(255),
         role: Joi.string().valid("buyer", "seller", "admin").required(),
-
+        phone: Joi.string().min(10).max(15),
     });
     return schema.validate(user);
 };
