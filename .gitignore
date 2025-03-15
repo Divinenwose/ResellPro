@@ -1,6 +1,5 @@
 /backend/node_modules
 /backend/package-lock.json
-/backend/package.json
 /backend/src/config/config.env
 /backend/src/config/config.env.local
 /backend/src/config/config.env.development
