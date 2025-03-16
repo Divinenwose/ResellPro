@@ -45,15 +45,17 @@ const ListedProject = () => {
       <div className="header">
         <h2 className="title">Trending Items</h2>
         <div className="filters">
-          <select className="dropdown" value={selectedState} onChange={(e) => setSelectedState(e.target.value)}>
-            {statesInNigeria.map((state, index) => (
-              <option key={index} value={state}>{state}</option>
-            ))}
-          </select>
-          <select className="dropdown-selected" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
-            <option>New</option>
-            <option>Old</option>
-          </select>
+          <div className="select-container">
+            <select className="dropdown" value={selectedState} onChange={(e) => setSelectedState(e.target.value)}>
+              {statesInNigeria.map((state, index) => (
+                <option key={index} value={state}>{state}</option>
+              ))}
+            </select>
+            <select className="dropdown-selected" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
+              <option>New</option>
+              <option>Old</option>
+            </select>
+          </div>
         </div>
       </div>
       <div className="grid">
