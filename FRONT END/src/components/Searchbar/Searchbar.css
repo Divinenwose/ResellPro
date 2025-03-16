@@ -1,24 +1,24 @@
-.search-container{
-    margin: 30px 400px;
+.search-container {
+    margin: 30px auto;
     display: flex;
-    gap:8px;
+    gap: 8px;
     align-items: center;
     border: 2px solid #FF9738;
     border-radius: 5px;
     padding: 8px;
-    width: 100%;
+    width: 90%;
     max-width: 568px;
 }
 
-.search-input{
+.search-input {
     border: none;
 }
 
-.search-input::placeholder{
+.search-input::placeholder {
     font-family: Inter;
     font-weight: 400;
     font-size: 12px;
     line-height: 14.52px;
     letter-spacing: 0%;
-    color:#FF9738;
+    color: #FF9738;
 }

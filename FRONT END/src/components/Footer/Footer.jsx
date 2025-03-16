@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom"; // ✅ Import useLocation
+import { Link, useLocation } from "react-router-dom"; 
 import "./Footer.css";
 import FooterLogo from "../../assets/flogo.png";
 import Twitter_icon from "../../assets/twitter.png";
@@ -12,7 +12,7 @@ import effect3 from "../../assets/effect3.png";
 const Footer = () => {
     const location = useLocation();
 
-    // ✅ Scroll to top when the route changes
+    
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [location.pathname]);
@@ -40,15 +40,21 @@ const Footer = () => {
                     </ul>
                 </div>
                 <div className="social-icons">
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                        <img src={Facebook_icon} alt="Facebook" className="icons" />
-                    </a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                        <img src={Instagram_icon} alt="Instagram" className="icons" />
-                    </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                        <img src={Twitter_icon} alt="Twitter" className="icons" />
-                    </a>
+                    <div className="facebook-container">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                            <img src={Facebook_icon} alt="Facebook" className="icons" />
+                        </a>
+                    </div>
+                    <div className="instagram-container">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                            <img src={Instagram_icon} alt="Instagram" className="icons" />
+                        </a>
+                    </div>
+                    <div className="twitter-container">
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                            <img src={Twitter_icon} alt="Twitter" className="icons" />
+                        </a>
+                    </div>
                 </div>
             </div>
             <div className="effects">

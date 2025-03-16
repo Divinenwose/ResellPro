@@ -8,6 +8,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -26,7 +27,11 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="nav-links-container">
+      <button className="nav-toggle" onClick={() => setIsNavOpen(!isNavOpen)}>
+        ☰
+      </button>
+
+      <div className={`nav-links-container ${isNavOpen ? "active" : ""}`}>
         <ul className="nav-links">
           <li className={location.pathname === "/" ? "active" : ""}>
             <Link to="/">Home</Link>
@@ -41,22 +46,23 @@ const Navbar = () => {
             <Link to="/categories">Featured categories</Link>
           </li>
         </ul>
+
+        <div className="nav-btn-container">
+          {isLoggedIn ? (
+            <div className="user-menu">
+              <span className="user-icon">👤</span>
+              <ul className="dropdown">
+                <li onClick={handleLogout}>Sign Out</li>
+              </ul>
+            </div>
+          ) : (
+            <button className="nav-btn" onClick={() => setIsAuthOpen(true)}>
+              Register Now
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="nav-btn-container">
-        {isLoggedIn ? (
-          <div className="user-menu">
-            <span className="user-icon">👤</span>
-            <ul className="dropdown">
-              <li onClick={handleLogout}>Sign Out</li>
-            </ul>
-          </div>
-        ) : (
-          <button className="nav-btn" onClick={() => setIsAuthOpen(true)}>
-            Register Now
-          </button>
-        )}
-      </div>
       {isAuthOpen && <AuthModal close={() => setIsAuthOpen(false)} />}
     </div>
   );

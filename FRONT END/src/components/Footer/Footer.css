@@ -28,7 +28,7 @@
 
 .links li{
     font-family: Montserrat;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 14px;
     line-height: 14.63px;
     letter-spacing: 0%;
@@ -36,10 +36,15 @@
     padding-top: 20px;
 }
 
+.social-icons{
+    display: flex;
+    gap: 10px;
+}
+
+
 .icons{
-    width: 40px;
+    width: 28px;
     margin-top: 60px;
-    padding-left: 8px;
 }
 
 
@@ -66,3 +71,108 @@
     bottom: 210px;
 }
 
+/* Responsive Footer */
+@media (max-width: 1024px) {
+    .footer-details {
+        flex-wrap: wrap;
+        gap: 100px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .footer-logo-container {
+        margin-left: 0;
+    }
+
+    .links {
+        justify-content: center;
+    }
+
+    .effect-one, .effect-two {
+        display: none; /* Hides effects on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-details {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .links {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .icons {
+        width: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        margin-top: 100px;
+        padding: 20px;
+    }
+
+    .footer-details {
+        padding: 20px;
+        gap: 30px;
+    }
+
+    .footer-logo-container {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .links {
+        gap: 10px;
+    }
+
+    .links li {
+        font-size: 12px;
+    }
+
+    .icons {
+        width: 22px;
+    }
+}
+
+@media (max-width: 375px) {
+    .footer {
+        padding: 15px;
+        margin-top: 80px;
+    }
+
+    .footer-details {
+        gap: 20px;
+    }
+
+    .links {
+        gap: 8px;
+    }
+
+    .links li {
+        font-size: 11px;
+    }
+
+    .icons {
+        width: 20px;
+    }
+
+    .copywrite {
+        font-size: 10px;
+    }
+
+    .effect-one{
+        right: 285px;
+        top: 400px;
+    }
+    
+    .effect-two{
+        left: -0px;
+        bottom: -410px;
+    }
+}

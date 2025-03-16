@@ -2,35 +2,42 @@
     max-width: 1200px;
     margin: auto;
     padding: 20px;
-  }
-  
-  .header {
+}
+
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     margin-bottom: 20px;
-  }
-  
-  .title {
+    text-align: center;
+}
+
+.title {
     font-size: 36px;
-    font-weight: bold;
-    font-family: "Montserrat";
     font-weight: 600;
+    font-family: "Montserrat";
     line-height: 43.88px;
     letter-spacing: 0%;
-  }
+}
+
   
-  .filters {
+.filters {
     display: flex;
     gap: 10px;
-  }
+}
+
+.select-container{
+  display: flex;
+  gap: 10px;
+}
   
-  .dropdown {
+.dropdown {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
-    width: 182;
-    height: 44;
+    width: 182px;
+    height: 44px;
     left: 1001px;
     gap: 20px;
     border-radius: 8px;
@@ -46,11 +53,11 @@
     line-height: 19.5px;
     letter-spacing: 0%;
     text-align: center;
-  }
+}
 
-  .dropdown-selected{
-    width: 117;
-    height: 44;
+.dropdown-selected{
+    width: 117px;
+    height: 44px;
     top: 711px;
     left: 1263px;
     gap: 20px;
@@ -67,13 +74,13 @@
     line-height: 19.5px;
     letter-spacing: 0%;
     text-align: center;
-  }
+}
   
-  .grid {
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 25px;
-  }
+}
   
   .card {
     border: 1px solid #ddd;
@@ -192,7 +199,7 @@
     }
   
     .header {
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       text-align: center;
     }
@@ -224,22 +231,33 @@
   }
   
   @media (max-width: 768px) {
-    .title {
-      font-size: 32px;
+    .header{
+      flex-direction: row;  
     }
-  
+
+    .title {
+      font-size: 16px;
+    }
+
+    .select-container{
+      display: flex;
+    }
+
     .filters {
       flex-direction: column;
       align-items: center;
     }
   
     .dropdown, .dropdown-selected {
-      width: 100%;
+      padding:10px 8px;
+      width: 110px;
+      height: 44px;
       text-align: center;
+      font-size: 14px;
     }
   
     .card {
-      text-align: center;
+      text-align: left;
     }
   
     .card-title, .card-price {
@@ -255,12 +273,36 @@
   
   @media (max-width: 380px) {
     .header{
-      flex-direction: row;
+      flex-direction: row;  
     }
+
     .title {
-      font-size: 24px;
+      font-size: 14px;
     }
-  
+
+    .select-container{
+      gap: 58x;
+    }
+
+    .dropdown{
+      border-radius: 8px;
+      border-width: 2px;
+      padding:10px 8px;
+      width: 95px;
+      height: 44px;
+      font-size: 12px
+    }
+
+    .dropdown-selected{
+      width: 75px;
+      height: 44px;
+      font-size: 12px;
+    }
+
+    .card{
+      text-align: left;
+    }
+
     .card-title {
       font-size: 16px;
     }
