@@ -29,23 +29,7 @@ This document provides an overview of the API endpoints available in the ReSellP
     {
       "success": true,
       "message": "User created successfully",
-      "status_code": 201,
-      "data": {
-        "user": {
-          "name": "John Doe",
-          "email": "john@example.com",
-          "phone": "",
-          "role": "buyer",
-          "is_verified_email": false,
-          "is_verified_phone": false,
-          "phone_verification_code": null,
-          "email_verification_code": "123456",
-          "created_at": "2025-03-10T21:56:42.443Z",
-          "updated_at": "2025-03-10T21:56:42.443Z",
-          "__v": 0
-        },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-      }
+      "status_code": 201
     }
     ```
   - **400 Bad Request**: Validation error or user already exists.
@@ -172,6 +156,41 @@ This document provides an overview of the API endpoints available in the ReSellP
     }
     ```
   - **400 Bad Request**: Google authentication failed.
+
+### GET /api/auth/facebook
+
+- **Description**: Initiate Facebook OAuth authentication.
+- **Response**: Redirects to Facebook for authentication.
+
+### GET /api/auth/facebook/callback
+
+- **Description**: Facebook OAuth callback endpoint.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Facebook authentication successful",
+      "status_code": 200,
+      "data": {
+        "user": {
+          "name": "Farouq Akinola",
+          "email": "akinolaakinkunmifa@gmail.com",
+          "phone": "",
+          "role": "buyer",
+          "is_verified_email": true,
+          "is_verified_phone": false,
+          "phone_verification_code": null,
+          "email_verification_code": null,
+          "created_at": "2025-03-10T21:56:42.443Z",
+          "updated_at": "2025-03-10T21:56:42.443Z",
+          "__v": 0
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+    ```
+  - **400 Bad Request**: Facebook authentication failed.
 
 ## User Routes
 
