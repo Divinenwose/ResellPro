@@ -65,6 +65,16 @@ const listingSchema = new mongoose.Schema({
     }
 });
 
+listingSchema.index({ 
+    price: 1, 
+    category: 1, 
+    condition: 1, 
+    isEcoFriendly: 1, 
+    autoRelist: 1 
+});
+
+listingSchema.index({ title: "text", description: "text" }); 
+
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const validateListing = (listing) => {
