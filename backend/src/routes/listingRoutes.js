@@ -58,13 +58,28 @@ router.post(
     );
 });
 
-// Get all listings
+// Get listings with filters, including pagination
 router.get("/", async (req, res) => {
     try {
+        const { minPrice, maxPrice, category, condition, isEcoFriendly, autoRelist, search, page = 1, limit = 10 } = req.query;
+
+        // Construct query dynamically
+        const filters = {};
+
+        if (minPrice && maxPrice) {
+            filters.price = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
+        }
+        if (category) filters.category = category;
+        if (condition) filters.condition = condition;
+        if (isEcoFriendly !== undefined) filters.isEcoFriendly = isEcoFriendly === "true";
+        if (autoRelist !== undefined) filters.autoRelist = autoRelist === "true";
+        if (search) filters.$text = { $search: search };
+
         const listings = await Listing.aggregate([
+            { $match: filters },
             {
                 $lookup: {
-                    from: "listingimages", // MongoDB collection name (lowercase + pluralized)
+                    from: "listingimages",
                     localField: "_id",
                     foreignField: "listing",
                     as: "images"
@@ -86,13 +101,15 @@ router.get("/", async (req, res) => {
                     as: "seller"
                 }
             },
-            { $unwind: "$category" }, // Convert category array to object
-            { $unwind: "$seller" },   // Convert seller array to object
+            { $unwind: "$category" },
+            { $unwind: "$seller" },
             {
                 $project: {
-                    "seller.password": 0 // Exclude seller password (if stored)
+                    "seller.password": 0
                 }
-            }
+            },
+            { $skip: (page - 1) * limit },
+            { $limit: parseInt(limit) }
         ]);
 
         // Format images with URLs
@@ -104,22 +121,31 @@ router.get("/", async (req, res) => {
             }));
         });
 
+        const totalListings = await Listing.countDocuments(filters);
+
         return res.status(200).json({
             success: true,
             message: "Listings fetched successfully",
             status_code: 200,
-            data: listings
+            data: listings,
+            pagination: {
+                total: totalListings,
+                page: parseInt(page),
+                limit: parseInt(limit),
+                pages: Math.ceil(totalListings / limit)
+            }
         });
+
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching listings:", error);
         return res.status(500).json({
             success: false,
-            message: "Internal server error",
-            status_code: 500
+            message: "Internal Server Error",
+            status_code: 500,
+            error: error.message
         });
     }
 });
-
 
 // Get a single listing by ID
 router.get("/:id", async (req, res) => {
