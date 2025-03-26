@@ -29,23 +29,7 @@ This document provides an overview of the API endpoints available in the ReSellP
     {
       "success": true,
       "message": "User created successfully",
-      "status_code": 201,
-      "data": {
-        "user": {
-          "name": "John Doe",
-          "email": "john@example.com",
-          "phone": "",
-          "role": "buyer",
-          "is_verified_email": false,
-          "is_verified_phone": false,
-          "phone_verification_code": null,
-          "email_verification_code": "123456",
-          "created_at": "2025-03-10T21:56:42.443Z",
-          "updated_at": "2025-03-10T21:56:42.443Z",
-          "__v": 0
-        },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-      }
+      "status_code": 201
     }
     ```
   - **400 Bad Request**: Validation error or user already exists.
@@ -173,6 +157,41 @@ This document provides an overview of the API endpoints available in the ReSellP
     ```
   - **400 Bad Request**: Google authentication failed.
 
+### GET /api/auth/facebook
+
+- **Description**: Initiate Facebook OAuth authentication.
+- **Response**: Redirects to Facebook for authentication.
+
+### GET /api/auth/facebook/callback
+
+- **Description**: Facebook OAuth callback endpoint.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Facebook authentication successful",
+      "status_code": 200,
+      "data": {
+        "user": {
+          "name": "Farouq Akinola",
+          "email": "akinolaakinkunmifa@gmail.com",
+          "phone": "",
+          "role": "buyer",
+          "is_verified_email": true,
+          "is_verified_phone": false,
+          "phone_verification_code": null,
+          "email_verification_code": null,
+          "created_at": "2025-03-10T21:56:42.443Z",
+          "updated_at": "2025-03-10T21:56:42.443Z",
+          "__v": 0
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+    ```
+  - **400 Bad Request**: Facebook authentication failed.
+
 ## User Routes
 
 ### GET /api/users
@@ -256,48 +275,157 @@ This document provides an overview of the API endpoints available in the ReSellP
     ```
   - **400 Bad Request**: Validation error, category not found, or invalid file type.
 
-### GET /api/listings
+# **GET /api/listings**
 
-- **Description**: Retrieve all listings.
-- **Response**:
-  - **200 OK**:
-    ```json
+## **Description**
+Retrieve all listings with optional filters, search, pagination, and related data (category, seller, and images).
+
+---
+
+## **Query Parameters**
+
+| Parameter       | Type    | Description |
+|---------------|--------|-------------|
+| `search`      | String | Search listings by title or description (case-insensitive). |
+| `minPrice`    | Number | Minimum price filter. |
+| `maxPrice`    | Number | Maximum price filter. |
+| `category`    | String | Category ID filter. |
+| `condition`   | String | Filter by condition (e.g., "new", "used"). |
+| `isEcoFriendly` | Boolean | Filter listings that are eco-friendly (`true` or `false`). |
+| `autoRelist`  | Boolean | Filter listings that auto-relist (`true` or `false`). |
+| `page`        | Number | Page number (default: `1`). |
+| `limit`       | Number | Number of listings per page (default: `10`). |
+
+---
+
+## **Response**
+
+### **✅ 200 OK**
+```json
+{
+  "success": true,
+  "message": "Listings fetched successfully",
+  "status_code": 200,
+  "data": [
     {
-      "success": true,
-      "message": "Listings fetched successfully",
-      "status_code": 200,
-      "data": [
+      "_id": "60cf601a372f86ecf68759e2",
+      "title": "Sample Listing",
+      "description": "This is a sample listing.",
+      "price": 100.00,
+      "category": {
+        "_id": "60cf601a372f86ecf68759e1",
+        "name": "Electronics",
+        "description": "Electronic gadgets"
+      },
+      "seller": {
+        "_id": "60cf601a372f86ecf68759e3",
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "123-456-7890"
+      },
+      "condition": "new",
+      "isEcoFriendly": true,
+      "autoRelist": false,
+      "status": "active",
+      "createdAt": "2025-03-10T21:56:42.443Z",
+      "updatedAt": "2025-03-10T21:56:42.443Z",
+      "images": [
         {
-          "_id": "60cf601a372f86ecf68759e2",
-          "title": "Sample Listing",
-          "description": "This is a sample listing.",
-          "price": 100.00,
-          "category": {
-            "_id": "60cf601a372f86ecf68759e1",
-            "name": "Electronics"
-          },
-          "seller": {
-            "_id": "60cf601a372f86ecf68759e3",
-            "name": "John Doe",
-            "email": "john@example.com",
-            "phone": ""
-          },
-          "condition": "new",
-          "isEcoFriendly": true,
-          "status": "active",
-          "createdAt": "2025-03-10T21:56:42.443Z",
-          "updatedAt": "2025-03-10T21:56:42.443Z",
-          "images": [
-            {
-              "_id": "60cf601a372f86ecf68759e4",
-              "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
-              "original_name": "sample.jpg"
-            }
-          ]
+          "_id": "60cf601a372f86ecf68759e4",
+          "image_url": "http://localhost:5000/api/uploads/1626012345678-sample.jpg",
+          "original_name": "sample.jpg"
         }
       ]
     }
-    ```
+  ],
+  "pagination": {
+    "total": 100,
+    "page": 1,
+    "limit": 10,
+    "pages": 10
+  }
+}
+```
+## Error Responses
+
+### 400 Bad Request
+Occurs when invalid query parameters are provided.
+
+```json
+{
+  "success": false,
+  "message": "Invalid query parameters",
+  "status_code": 400
+}
+```
+
+### 404 Not Found
+Occurs when no listings match the query.
+
+```json
+{
+  "success": false,
+  "message": "No listings found",
+  "status_code": 404
+}
+```
+
+### 500 Internal Server Error
+Occurs when an unexpected error happens on the server.
+
+```json
+{
+  "success": false,
+  "message": "Internal Server Error",
+  "status_code": 500
+}
+```
+
+## Query Parameters
+
+| Parameter     | Type    | Description                                      |
+|---------------|---------|--------------------------------------------------|
+| search        | string  | Search keyword for title/description             |
+| minPrice      | number  | Minimum price filter                             |
+| maxPrice      | number  | Maximum price filter                             |
+| category      | string  | Category ID to filter listings                   |
+| condition     | string  | Condition filter (new, used, like_new)           |
+| isEcoFriendly | boolean | Filter eco-friendly listings (true or false)     |
+| autoRelist    | boolean | Filter listings with auto-relist enabled         |
+| page          | number  | Page number for pagination (default: 1)          |
+| limit         | number  | Number of listings per page (default: 10)        |
+
+## Example Requests
+
+### 1️⃣ Fetch All Listings (Paginated, Default Page 1, 10 per page)
+```bash
+GET http://localhost:5000/api/listings
+```
+
+### 2️⃣ Search Listings by Title/Description
+```bash
+GET http://localhost:5000/api/listings?search=phone
+```
+
+### 3️⃣ Filter Listings by Price Range
+```bash
+GET http://localhost:5000/api/listings?minPrice=100&maxPrice=500
+```
+
+### 4️⃣ Fetch Listings in a Specific Category
+```bash
+GET http://localhost:5000/api/listings?category=60cf601a372f86ecf68759e1
+```
+
+### 5️⃣ Fetch Eco-Friendly Listings
+```bash
+GET http://localhost:5000/api/listings?isEcoFriendly=true
+```
+
+### 6️⃣ Search + Pagination (Page 2, 5 Listings per Page)
+```bash
+GET http://localhost:5000/api/listings?search=example&page=2&limit=5
+``` 
 
 ### GET /api/listings/:id
 
