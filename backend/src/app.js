@@ -4,7 +4,8 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const listingRoutes = require("./routes/listingRoutes");
 const listingCategoryRoutes = require("./routes/listingCategoryRoutes");
-const cors = require("cors");
+const cors = require('cors');
+
 const path = require("path");
 const passport = require("passport");
 require("./config/passport");

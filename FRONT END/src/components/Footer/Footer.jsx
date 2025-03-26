@@ -28,11 +28,11 @@ const Footer = () => {
                         <li className={location.pathname === "/" ? "active" : ""}>
                             <Link to="/">Home</Link>
                         </li>
+                        <li className={location.pathname === "/recycled" ? "active" : ""}>
+                            <Link to="/recycled">Recycled</Link>
+                        </li>
                         <li className={location.pathname === "/about" ? "active" : ""}>
                             <Link to="/about">About us</Link>
-                        </li>
-                        <li className={location.pathname === "/products" ? "active" : ""}>
-                            <Link to="/products">Products</Link>
                         </li>
                         <li className={location.pathname === "/categories" ? "active" : ""}>
                             <Link to="/categories">Featured categories</Link>

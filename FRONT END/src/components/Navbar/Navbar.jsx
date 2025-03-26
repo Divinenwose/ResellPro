@@ -61,8 +61,6 @@ const Navbar = () => {
           <img className="nav-logo" src={Logo} alt="Logo" />
         </Link>
       </div>
-
-      {/* Toggle Button for Mobile */}
       <button className="nav-toggle" onClick={() => setIsNavOpen(!isNavOpen)}>
         ☰
       </button>
@@ -72,8 +70,8 @@ const Navbar = () => {
           <li className={location.pathname === "/" ? "active" : ""}>
             <Link to="/">Home</Link>
           </li>
-          <li className={location.pathname === "/products" ? "active" : ""}>
-            <Link to="/products">Recycled</Link>
+          <li className={location.pathname === "/recycled" ? "active" : ""}>
+            <Link to="/recycled">Recycled</Link>
           </li>
           <li className={location.pathname === "/about" ? "active" : ""}>
             <Link to="/about">About us</Link>

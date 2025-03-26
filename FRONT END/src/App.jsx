@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./Pages/Home/Home";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
 import AboutUs from "./Pages/About/About";
-
+import RecycledPage from "./Pages/Recycled/recycled";
 const App = () => {
   const navigate = useNavigate();
 
@@ -15,8 +15,8 @@ const App = () => {
     const token = urlParams.get("token");
 
     if (token) {
-      localStorage.setItem("token", token); // Save token to local storage
-      navigate("/"); // Redirect to homepage
+      localStorage.setItem("token", token); 
+      navigate("/"); 
     }
   }, []);
 
@@ -28,6 +28,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/recycled" element={<RecycledPage />} />
       </Routes>
     </>
   );

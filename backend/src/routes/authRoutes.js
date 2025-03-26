@@ -120,7 +120,7 @@ router.post("/logout", async (req, res) => {
 
         await BlackListedToken.create({
             token,
-            expiresAt: new Date(decoded.exp * 1000) // Convert to milliseconds
+            expiresAt: new Date(decoded.exp * 1000) 
         });
 
         return res.status(200).json({

@@ -1,0 +1,213 @@
+.recycled-page {
+    margin-top: 30px;
+}
+
+.recycled-hero-container {
+    background: url(/images/recycled-hero.png);
+    background-size: cover;
+    height: 497px;
+}
+
+.recycled-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding-top: 140px;
+}
+
+.recycled-hero h2 {
+    font-size: 38px;
+    font-family: Montserrat, sans-serif;
+    color: #ECECEC;
+    line-height: 59px;
+    font-weight: 500;
+}
+
+.recycled-hero h4 {
+    margin-inline: 150px;
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+    color: #ECECEC;
+    line-height: 59px;
+    font-weight: 500;
+}
+
+.shop-eco-btn {
+    background: #ff8c00;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    font-family: Montserrat, sans-serif;
+    margin-inline: 230px; 
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.ecofriendly-content {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.ecofriendly-content h2 {
+    font-size: 40px;
+    font-family: Montserrat, sans-serif;
+    color: #000;
+    line-height: 59px;
+    font-weight: 600;
+}
+
+.ecofriendly-items-container {
+    display: flex;
+    gap: 10px;
+    padding-inline: 20px;
+    padding-block: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ecofriendly-item img {
+    width: 100%;
+    max-width: 425px;
+}
+
+.ecofriendly-item h4 {
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+    color: #319F43;
+    line-height: 59px;
+    font-weight: 500;
+}
+
+.why-recycle-content {
+    margin-top: 30px;
+    padding: 40px;
+}
+
+.why-recycle-content h2 {
+    text-align: center;
+    font-size: 40px;
+    font-family: Montserrat, sans-serif;
+    color: #000;
+    line-height: 59px;
+    font-weight: 600;
+}
+
+.why-recycle-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.left-side {
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+    color: #000;
+    line-height: 42px;
+    font-weight: 500;
+    letter-spacing: 0%;
+    max-width: 656px;
+}
+
+.left-side ol {
+    padding-top: 20px;
+}
+
+.right-side img {
+    width: 100%;
+    max-width: 656px;
+}
+
+.recycle-benefit {
+    margin-top: 30px;
+}
+
+.recycle-benefit-content {
+    background: url(/images/recycle-benefit.png);
+    height: 497px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding-top: 100px;
+}
+
+.recycle-benefit-content h2 {
+    font-size: 40px;
+    font-family: Montserrat, sans-serif;
+    color: #ECECEC;
+    line-height: 59px;
+    font-weight: 500;
+    margin-inline: 180px;
+}
+
+.recycle-benefit-content ul {
+    list-style: none;
+    padding-top: 15px;
+    margin-inline: 220px;
+}
+
+.recycle-benefit-content ul li {
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    line-height: 39px;
+    font-weight: 500;
+    letter-spacing: 0%;
+}
+
+.donate-btn {
+    background: #ff8c00;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    font-family: Montserrat, sans-serif;
+    margin-inline: 280px; 
+    margin-top: 30px;
+    display: inline-block;
+}
+
+
+@media (max-width: 768px) {
+    .recycled-hero {
+        align-items: center;
+        text-align: center;
+        padding-top: 100px;
+    }
+
+    .recycled-hero h4, 
+    .recycle-benefit-content h2, 
+    .recycle-benefit-content ul {
+        margin-inline: 20px;
+    }
+
+    .recycle-benefit-content{
+        height: 520px;
+    }
+
+    .ecofriendly-items-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .why-recycle-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    
+    .shop-eco-btn, 
+    .donate-btn {
+        margin-inline: auto;
+        display: block;
+        text-align: center;
+    }
+}
