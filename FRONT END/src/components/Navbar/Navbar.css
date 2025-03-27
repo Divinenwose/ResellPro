@@ -31,7 +31,8 @@
     display: flex;
     gap: 70px;
     list-style: none;
-    padding-left: 150px;
+    padding-left: 250px;
+    font-family: Montserrat;
 }
 
 .nav-links li {
