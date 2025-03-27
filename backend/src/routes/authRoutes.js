@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const BlackListedToken = require("../models/BlackListedToken");
+const UserSocialAccount = require("../models/UserSocialAccount");
 
 require('dotenv').config();
 
@@ -58,6 +59,23 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });
 
+    if(!user.password) {
+        try {
+            const userSocialAccount = await UserSocialAccount.findOne({ user: user._id });
+            const authProvider = userSocialAccount.provider === "google" ? "Google" : "Facebook";
+            return res.status(400).json({
+                success: false,
+                message: `This account is linked to your ${authProvider} account. Please log in with ${authProvider} instead of using a password.`,
+                status_code: 400
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error",
+                status_code: 500
+            });
+        }
+    }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if(!validPassword) return res.status(400).json({
         success: false,
