@@ -1,61 +1,66 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
 
 const AuthModal = ({ close }) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [userType, setUserType] = useState("Buyer");
-  const [formData, setFormData] = useState({ name: "", email: "", password: "", businessName: "", phone: "", category: "", location: "" });
-  const navigate = useNavigate();
+  const [userType, setUserType] = useState("buyer"); // Ensure lowercase "buyer"
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    businessName: "",
+    phone: "",
+    category: "",
+    location: "",
+    role: "buyer",
+  });
+
+  // Update role when userType changes
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, role: userType }));
+  }, [userType]);
 
   // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Submit Form
+  // Submit Form for Sign-Up or Login
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const url = isSignUp ? "/api/auth/signup" : "/api/auth/login";
-      const response = await axios.post(`http://localhost:5000${url}`, formData);
+      const payload = isSignUp
+        ? userType === "buyer"
+          ? { name: formData.name, email: formData.email, password: formData.password, role: userType } // Buyer sign-up
+          : formData // Seller sign-up (all fields)
+        : { email: formData.email, password: formData.password, role: userType }; // Login request
 
-      localStorage.setItem("token", response.data.data.token); // Store token
-      alert(isSignUp ? "Account created successfully!" : "Logged in successfully!");
-      close(); // Close modal
+      const response = await axios.post(`http://localhost:5000${url}`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (isSignUp) {
+        toast.success("Sign-up successful! Please log in.");
+        setTimeout(() => setIsSignUp(false), 2000); // Switch to login after 2 seconds
+      } else {
+        toast.success("User login successful!");
+        localStorage.setItem("token", response.data.data.token);
+        setTimeout(() => (window.location.href = "/"), 2000); // Redirect after 2 seconds
+      }
     } catch (error) {
-      alert("Error: " + error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
-
-  // Handle Google Login
-  const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
-  };
-
-  // Handle Facebook Login
-  const handleFacebookLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/facebook";
-  };
-
-  // Handle OAuth Callback
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-
-    if (token) {
-      localStorage.setItem("token", token);
-      alert("Login successful!");
-      close();
-      navigate("/"); // Redirect user to home or dashboard
-    }
-  }, [navigate, close]);
 
   return (
     <div className="auth-modal">
+      <ToastContainer />
       <div className="auth-container">
         <button className="close-btn" onClick={close}>×</button>
 
@@ -63,56 +68,62 @@ const AuthModal = ({ close }) => {
         <p>{isSignUp ? "Join us and start ordering" : "Welcome back! Log into your account"}</p>
 
         <div className="toggle-container">
-          <button className={userType === "Buyer" ? "active" : ""} onClick={() => setUserType("Buyer")}>Buyer</button>
-          <button className={userType === "Seller" ? "active" : ""} onClick={() => setUserType("Seller")}>Seller</button>
+          <button className={userType === "buyer" ? "active" : ""} onClick={() => setUserType("buyer")}>
+            Buyer
+          </button>
+          <button className={userType === "seller" ? "active" : ""} onClick={() => setUserType("seller")}>
+            Seller
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
-          {isSignUp ? (
-            userType === "Buyer" ? (
-              <>
-                <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-              </>
-            ) : (
-              <>
-                <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                <div className="flex-container">
-                  <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required />
-                  <select name="category" onChange={handleChange} required>
-                    <option value="">Item Category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Home & Kitchen">Home & Kitchen</option>
-                    <option value="Automotive">Automotive</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
-              </>
-            )
-          ) : (
-            userType === "Buyer" ? (
-              <>
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-              </>
-            ) : (
-              <>
-                <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-              </>
-            )
+          {isSignUp && userType === "buyer" && (
+            <>
+              <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
+              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            </>
+          )}
+
+          {/* Seller Sign-Up */}
+          {isSignUp && userType === "seller" && (
+            <>
+              <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
+              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              <div className="flex-container">
+                <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required />
+                <select name="category" onChange={handleChange} required>
+                  <option value="">Item Category</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Home & Kitchen">Home & Kitchen</option>
+                  <option value="Automotive">Automotive</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
+              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            </>
+          )}
+
+          {/* Login Form (Common for Buyers and Sellers) */}
+          {!isSignUp && (
+            <>
+              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            </>
           )}
 
           <button className="auth-btn" type="submit">{isSignUp ? "Create Account" : "Login"}</button>
 
           <div className="or-divider">— Other sign-up options —</div>
           <div className="social-login">
-            <img className="google-icon" src={GoogleIcon} alt="Google" onClick={handleGoogleLogin} />
-            <img className="facebook-icon" src={FacebookIcon} alt="Facebook" onClick={handleFacebookLogin} />
+            <a href="http://localhost:5000/api/auth/google">
+              <img className="google-icon" src={GoogleIcon} alt="Google" />
+            </a>
+            <a href="http://localhost:5000/api/auth/facebook">
+              <img className="facebook-icon" src={FacebookIcon} alt="Facebook" />
+            </a>
           </div>
         </form>
 
