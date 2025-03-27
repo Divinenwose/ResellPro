@@ -1,0 +1,147 @@
+
+  .hero-section {
+    position: relative;
+    padding: 30px;
+  }
+  
+  
+  .hero-text h1 {
+    width: 545px;
+    color: #2F2F2F;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin-top: 140px;
+  }
+  
+  .hero-text p {
+    font-size: 20px;
+    color: #616060;
+    width: 545px;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 20%;
+    margin-top: 40px;
+  }
+  
+  .btn-primary {
+    background: #ff8c00;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 45px;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 20%;
+    font-family: Montserrat;
+  }
+  
+  .hero-image {
+    width: 800px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    position: absolute;
+    right: -20px;
+    top: -120px;
+  }
+  
+
+  .review-img{
+    position: absolute;
+    left: 500px;
+    top: 490px;
+    z-index: 10;
+  }
+
+  .link-img{
+    position: absolute;
+    left: 180px;
+  }
+  
+  /* Marketplace Section */
+  .marketplace {
+    display: flex;
+    align-items: center;
+    margin-top: 450px;
+    background: white;
+  }
+  
+  .marketplace-text {
+    max-width: 500px;
+  }
+  
+  .marketplace-text h2 {
+    font-size: 24px;
+    color: #444;
+  }
+  
+  .marketplace-text p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .marketplace-images {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .marketplace-images img {
+    width: 200px;
+    border-radius: 10px;
+  }
+  
+  /* Features Section */
+  .features {
+    text-align: center;
+    padding: 50px;
+    background: #f3f3f3;
+  }
+  
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  .feature {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-icon {
+    font-size: 30px;
+  }
+  
+  /* Call to Action */
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+    background: #ff8c00;
+    color: white;
+  }
+  
+  .cta-image {
+    width: 300px;
+  }
+  
+  .cta-text {
+    max-width: 400px;
+  }
+  
+  .cta-text h2 {
+    font-size: 24px;
+  }
+  
+  

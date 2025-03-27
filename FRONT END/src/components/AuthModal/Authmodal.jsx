@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,9 +7,10 @@ import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
 
+
 const AuthModal = ({ close }) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [userType, setUserType] = useState("buyer"); // Ensure lowercase "buyer"
+  const [userType, setUserType] = useState("buyer"); 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,39 +21,36 @@ const AuthModal = ({ close }) => {
     location: "",
     role: "buyer",
   });
-
-  // Update role when userType changes
+  
   useEffect(() => {
     setFormData((prev) => ({ ...prev, role: userType }));
   }, [userType]);
+  });
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Submit Form for Sign-Up or Login
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const url = isSignUp ? "/api/auth/signup" : "/api/auth/login";
       const payload = isSignUp
         ? userType === "buyer"
-          ? { name: formData.name, email: formData.email, password: formData.password, role: userType } // Buyer sign-up
+          ? { name: formData.name, email: formData.email, password: formData.password, role: userType } 
           : formData // Seller sign-up (all fields)
-        : { email: formData.email, password: formData.password, role: userType }; // Login request
+        : { email: formData.email, password: formData.password, role: userType }; 
 
       const response = await axios.post(`http://localhost:5000${url}`, payload, {
         headers: { "Content-Type": "application/json" },
       });
-
       if (isSignUp) {
         toast.success("Sign-up successful! Please log in.");
-        setTimeout(() => setIsSignUp(false), 2000); // Switch to login after 2 seconds
+        setTimeout(() => setIsSignUp(false), 2000); 
       } else {
         toast.success("User login successful!");
         localStorage.setItem("token", response.data.data.token);
-        setTimeout(() => (window.location.href = "/"), 2000); // Redirect after 2 seconds
+        setTimeout(() => (window.location.href = "/"), 2000); 
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
@@ -63,7 +62,6 @@ const AuthModal = ({ close }) => {
       <ToastContainer />
       <div className="auth-container">
         <button className="close-btn" onClick={close}>×</button>
-
         <h2>{isSignUp ? "Create an Account" : "Log In"}</h2>
         <p>{isSignUp ? "Join us and start ordering" : "Welcome back! Log into your account"}</p>
 
@@ -77,15 +75,16 @@ const AuthModal = ({ close }) => {
         </div>
 
         <form onSubmit={handleSubmit}>
+
           {isSignUp && userType === "buyer" && (
             <>
-              <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
-              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-            </>
+              {userType === "Buyer" ? (
+                <>
+                  <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
+                  <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                  <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                </>
           )}
-
-          {/* Seller Sign-Up */}
           {isSignUp && userType === "seller" && (
             <>
               <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
@@ -106,7 +105,7 @@ const AuthModal = ({ close }) => {
             </>
           )}
 
-          {/* Login Form (Common for Buyers and Sellers) */}
+
           {!isSignUp && (
             <>
               <input type="email" name="email" placeholder="Email" onChange={handleChange} required />

@@ -4,6 +4,7 @@ const { User, validateUser, validateLogin } = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const BlackListedToken = require("../models/BlackListedToken");
 
 require('dotenv').config();
 
@@ -35,15 +36,10 @@ router.post("/signup", async (req, res) => {
     await user.save();
     
 
-    const token = jwt.sign({ _id: user._id, role: user.role, email: user.email, phone: user.phone }, process.env.JWT_SECRET_KEY);
-    res.status(201).json({
+    return res.status(201).json({
         success: true,
         message: "User created successfully",
-        status_code: 201,
-        data: {
-            user,
-            token
-        }
+        status_code: 201
     });
 });
 
@@ -69,25 +65,57 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });     
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY);
-    res.status(200).json({
+    const token = jwt.sign({ _id: user._id, role: user.role, email: user.email, phone: user.phone }, 
+                            process.env.JWT_SECRET_KEY,
+                            { expiresIn: "4h" });
+    return res.status(200).json({
         success: true,
         message: "User logged in successfully",
         status_code: 200,
         data: {
-            user,
+            user: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                is_verified_email: user.is_verified_email,
+                is_verified_phone: user.is_verified_phone,
+                phone_verification_code: user.phone_verification_code,
+                email_verification_code: user.email_verification_code,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                __v: user.__v
+            },
             token
         }
     });
 });
 
 router.post("/logout", async (req, res) => {
-    res.clearCookie("token");
-    res.status(200).json({
-        success: true,
-        message: "User logged out successfully",
-        status_code: 200
-    });
+    const token = req.header("Authorization")?.split(" ")[1];
+    if (!token) {
+        return res.status(400).json({ message: "No token provided" });
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+        await BlackListedToken.create({
+            token,
+            expiresAt: new Date(decoded.exp * 1000) // Convert to milliseconds
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "User logged out successfully",
+            status_code: 200
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid token",
+            status_code: 400
+        });
+    }
 
 });
 
@@ -97,26 +125,27 @@ router.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login", session: false }),
     (req, res) => {
-        console.log("Google Callback Triggered");
-        console.log("Request User Object:", req.user);
 
         if (!req.user) {
-            return res.status(400).json({
-                success: false,
-                message: "Google authentication failed",
-                status_code: 400
-            });
+            return res.redirect(`${process.env.FRONTEND_URL}/login?error=GoogleAuthFailed`);
         }
+        const token = req.user.token;
+        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}&authType=google`);
+    }
+);
 
-        return res.status(200).json({
-            success: true,
-            message: "Google authentication successful",
-            status_code: 200,
-            data: {
-                user: req.user.user,
-                token: req.user.token
-            }
-        });
+router.get("/facebook", passport.authenticate("facebook", {scope: ["email", "public_profile"	]}));
+
+router.get(
+    "/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/login", session: false }),
+    (req, res) => {
+
+        if (!req.user) {
+            return res.redirect(`${process.env.FRONTEND_URL}/login?error=FacebookAuthFailed`);
+        }
+        const token = req.user.token;
+        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}&authType=facebook`);
     }
 );
 
