@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,9 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
-
+import { useAuth } from "../../App";
 
 const AuthModal = ({ close }) => {
+  const { setAuth } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [userType, setUserType] = useState("buyer"); 
   const [formData, setFormData] = useState({
@@ -25,7 +25,6 @@ const AuthModal = ({ close }) => {
   useEffect(() => {
     setFormData((prev) => ({ ...prev, role: userType }));
   }, [userType]);
-  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,6 +49,7 @@ const AuthModal = ({ close }) => {
       } else {
         toast.success("User login successful!");
         localStorage.setItem("token", response.data.data.token);
+        setAuth({ token: response.data.data.token, isAuthenticated: true });
         setTimeout(() => (window.location.href = "/"), 2000); 
       }
     } catch (error) {
@@ -78,12 +78,10 @@ const AuthModal = ({ close }) => {
 
           {isSignUp && userType === "buyer" && (
             <>
-              {userType === "Buyer" ? (
-                <>
-                  <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
-                  <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                  <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                </>
+              <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
+              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            </>
           )}
           {isSignUp && userType === "seller" && (
             <>
@@ -104,7 +102,6 @@ const AuthModal = ({ close }) => {
               <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
             </>
           )}
-
 
           {!isSignUp && (
             <>
