@@ -5,8 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
+import { useAuth } from "../../App";
 
 const AuthModal = ({ close }) => {
+  const { setAuth } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [userType, setUserType] = useState("buyer"); 
   const [formData, setFormData] = useState({
@@ -51,6 +53,7 @@ const AuthModal = ({ close }) => {
       } else {
         toast.success("User login successful!");
         localStorage.setItem("token", response.data.data.token);
+        setAuth({ token: response.data.data.token, isAuthenticated: true });
         setTimeout(() => (window.location.href = "/"), 2000); 
       }
     } catch (error) {

@@ -19,10 +19,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
-    role: {
-        type: String,
+    roles: {
+        type: [String],
         enum: ["buyer", "seller", "admin"],
-        default: "buyer",
+        default: ["buyer"],
     },
     is_verified_email: {
         type: Boolean,
@@ -58,7 +58,7 @@ const validateUser = (user) => {
         email: Joi.string().email().required().min(6).max(255),
         password: Joi.string().required().min(6).max(255),
         role: Joi.string().valid("buyer", "seller", "admin").required(),
-        phone: Joi.string().min(10).max(15),
+        phone: Joi.string().min(4).max(15),
     });
     return schema.validate(user);
 };

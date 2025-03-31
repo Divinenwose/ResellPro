@@ -4,6 +4,8 @@ import AuthModal from "../../components/AuthModal/Authmodal";
 import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 import Notification_icon from "../../assets/notification.png";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Navbar = () => {
   const location = useLocation();
@@ -22,6 +24,13 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     if (token) setIsLoggedIn(true);
   }, []);
+
+  useEffect(() => {
+    if (location.state?.showLogin) {
+      setIsAuthOpen(true);
+      setAuthAction("login");
+    }
+  }, [location]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -48,10 +57,25 @@ const Navbar = () => {
     localStorage.setItem("token", "dummy_token");
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem("token");
-    setIsDropdownOpen(false);
+  const handleLogout = async (e) => {
+    try {
+      const url = "/api/auth/logout";
+      const payload = {
+        token: localStorage.getItem("token"),
+      };
+
+      const response = await axios.post(`http://localhost:5000${url}`, payload, {
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` },
+      });
+      setIsLoggedIn(false);
+      setIsDropdownOpen(false);
+      localStorage.removeItem("token");
+      toast.success("Logout successful!");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (

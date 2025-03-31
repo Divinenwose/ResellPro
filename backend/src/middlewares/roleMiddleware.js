@@ -45,7 +45,7 @@ const roleMiddleware = (requiredRoles) => {
         }
 
         // Check user role
-        if (!requiredRoles.includes(decoded.role)) {
+        if (!decoded.roles || !decoded.roles.some(role => requiredRoles.includes(role))) {
           return res.status(403).json({
             success: false,
             message: `Access denied! One of these roles required: ${requiredRoles.join(", ")}`,
