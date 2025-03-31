@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ListedProject.css";
 import image1 from "../../assets/item0.png";
 import image2 from "../../assets/item1.png";
@@ -11,7 +12,7 @@ import image8 from "../../assets/item7.png";
 import image9 from "../../assets/item8.png";
 import image10 from "../../assets/item9.png";
 import image11 from "../../assets/item10.png";
-import image12 from "../../assets/item21.png"
+import image12 from "../../assets/item21.png";
 import lowersection from "../../assets/lower_section.png";
 
 const statesInNigeria = [
@@ -39,6 +40,11 @@ const listedItems = [
 const ListedProject = () => {
   const [selectedState, setSelectedState] = useState("All states");
   const [selectedStatus, setSelectedStatus] = useState("New");
+  const navigate = useNavigate();
+
+  const handleProductClick = (product) => {
+    navigate("/product-detail", { state: { product } });
+  };
 
   return (
     <div className="listed-container">
@@ -63,7 +69,7 @@ const ListedProject = () => {
           .filter(item => (selectedState === "All states" || item.state === selectedState) &&
                           (selectedStatus === "New" || item.status === selectedStatus))
           .map((item) => (
-            <div key={item.id} className="card">
+            <div key={item.id} className="card" onClick={() => handleProductClick(item)}>
               <img src={item.image} alt={item.title} className="card-image" />
               <h4 className="card-title">{item.title}</h4>
               <p className="card-price">{item.price}</p>
@@ -74,14 +80,14 @@ const ListedProject = () => {
       </div>
       <div className="writeup">
         <div className="left">
-            <h2>Unlock your Marketplace Potential with Resellerpro</h2>
-            <p>Experience seamless access to thousands of listings for used, new, and recycled items. Resellpro streamlines your shopping experience, providing detailed seller profiles and ratings that ensure transparency and trust in every transaction</p>
-            <div className="unlock-link">
-                <a href="">Become a Seller</a>
-            </div>
+          <h2>Unlock your Marketplace Potential with Resellerpro</h2>
+          <p>Experience seamless access to thousands of listings for used, new, and recycled items. Resellpro streamlines your shopping experience, providing detailed seller profiles and ratings that ensure transparency and trust in every transaction</p>
+          <div className="unlock-link">
+            <a href="">Become a Seller</a>
+          </div>
         </div>
         <div className="right">
-            <img className="right-img" src={lowersection} alt="" />
+          <img className="right-img" src={lowersection} alt="" />
         </div>
       </div>
     </div>
