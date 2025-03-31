@@ -1,16 +1,17 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../App";
 
-const ProtectedRoute = ({ element: Component, ...rest }) => {
+const ProtectedRoute = () => {
   const { auth } = useAuth();
+  const location = useLocation();
+  console.log("Auth state:", auth);
 
-  return (
-    <Route
-      {...rest}
-      element={auth.isAuthenticated ? <Component /> : <Navigate to="/login" />}
-    />
-  );
+  if (auth.token === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  return auth.isAuthenticated ? <Outlet /> : <Navigate to="/" state={{ showLogin: true, from: location.pathname }} />;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

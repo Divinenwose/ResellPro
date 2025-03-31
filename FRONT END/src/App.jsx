@@ -7,33 +7,43 @@ import HomePage from "./Pages/Home/Home";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
 import AboutUs from "./Pages/About/About";
 import ProtectedRoute from "./components/ProtectedRoute";
-
-// Create a context for authentication
+import { jwtDecode } from "jwt-decode";
+  // Create a context for authentication
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 const App = () => {
-  const [auth, setAuth] = useState({ token: null, isAuthenticated: false });
+  const [auth, setAuth] = useState({ token: "loading", isAuthenticated: false });
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-
-    if (token && !localStorage.getItem("token")) {
-      localStorage.setItem("token", token);
-      console.log(token);
-      setAuth({ token, isAuthenticated: true });
-      navigate("/");
-      window.location.reload();
-    } else {
+    const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
+
       if (storedToken) {
-        setAuth({ token: storedToken, isAuthenticated: true });
+        try {
+          const decodedToken = jwtDecode(storedToken);
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp < currentTime) {
+            // Token expired, log out user
+            localStorage.removeItem("token");
+            setAuth({ token: null, isAuthenticated: false });
+            window.location.reload();
+          } else {
+            setAuth({ token: storedToken, isAuthenticated: true });
+          }
+        } catch (error) {
+          localStorage.removeItem("token");
+          setAuth({ token: null, isAuthenticated: false });
+        }
+      } else {
+        setAuth({ token: null, isAuthenticated: false });
       }
-    }
-  }, []);
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
@@ -43,7 +53,11 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/about" element={<AboutUs />} />
-        {/* <ProtectedRoute path="/protected" element={<ProtectedComponent />} /> */}
+
+        {/* add all protected routes under here */}
+        <Route element={<ProtectedRoute />}>
+          {/* <Route path="/dashboard" element={<Example />} /> */}
+        </Route>
       </Routes>
     </AuthContext.Provider>
   );

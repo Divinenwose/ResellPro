@@ -23,9 +23,14 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) setIsLoggedIn(true);
-
-    // console.log(token);
   }, []);
+
+  useEffect(() => {
+    if (location.state?.showLogin) {
+      setIsAuthOpen(true);
+      setAuthAction("login");
+    }
+  }, [location]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
