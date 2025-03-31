@@ -8,6 +8,7 @@ import CategoriesPage from "./Pages/featuredCategories/Categories";
 import AboutUs from "./Pages/About/About";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { jwtDecode } from "jwt-decode";
+import SellerProfile from "./Pages/SellerProfile/SellerProfile";
   // Create a context for authentication
 const AuthContext = createContext();
 
@@ -56,7 +57,7 @@ const App = () => {
 
         {/* add all protected routes under here */}
         <Route element={<ProtectedRoute />}>
-          {/* <Route path="/dashboard" element={<Example />} /> */}
+          <Route path="/seller-profile" element={<SellerProfile />} />
         </Route>
       </Routes>
     </AuthContext.Provider>

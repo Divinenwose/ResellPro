@@ -6,12 +6,18 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const BlackListedToken = require("../models/BlackListedToken");
 const UserSocialAccount = require("../models/UserSocialAccount");
+const SellerDetail = require("../models/SellerDetail");
 
 require('dotenv').config();
 
 router.post("/signup", async (req, res) => {
     console.log(req.body);
-    const { error } = validateUser(req.body);
+    const { error } = validateUser({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role
+    });
     if(error) return res.status(400).json({
         success: false,
         message: error.details[0].message,
@@ -25,13 +31,23 @@ router.post("/signup", async (req, res) => {
         status_code: 400
     });
 
+    if(req.body.role === "seller"){
+        if(!req.body.businessName || !req.body.description){
+            return res.status(400).json({
+                success: false,
+                message: "Business name and description are required for seller role",
+                status_code: 400
+            });
+        }
+    }
+
     user = new User(req.body);
     user.name = user.name.trim();
     user.email = user.email.trim();
     user.password = await bcrypt.hash(user.password, 10);
-    if(user.role === "buyer"){
+    if(req.body.role === "buyer"){
         user.roles = ["buyer"];
-    } else if(user.role === "seller"){
+    } else if(req.body.role === "seller"){
         user.roles = ["seller", "buyer"];
     }
     if(user.phone){
@@ -41,6 +57,14 @@ router.post("/signup", async (req, res) => {
     user.email_verification_code = Math.floor(100000 + Math.random() * 900000).toString();
     await user.save();
     
+    if(req.body.role === "seller"){
+        const sellerDetail = new SellerDetail({
+            user: user._id,
+            businessName: req.body.businessName,
+            description: req.body.description
+        });
+        await sellerDetail.save();
+    }
 
     return res.status(201).json({
         success: true,
@@ -149,7 +173,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login", session: false }),
+    passport.authenticate("google", { failureRedirect: "/", session: false }),
     (req, res) => {
 
         if (!req.user) {
@@ -164,7 +188,7 @@ router.get("/facebook", passport.authenticate("facebook", {scope: ["email", "pub
 
 router.get(
     "/facebook/callback",
-    passport.authenticate("facebook", { failureRedirect: "/login", session: false }),
+    passport.authenticate("facebook", { failureRedirect: "/", session: false }),
     (req, res) => {
 
         if (!req.user) {

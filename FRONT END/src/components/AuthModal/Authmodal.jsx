@@ -17,8 +17,7 @@ const AuthModal = ({ close }) => {
     password: "",
     businessName: "",
     phone: "",
-    category: "",
-    location: "",
+    description: "",
     role: "buyer",
   });
   
@@ -85,21 +84,17 @@ const AuthModal = ({ close }) => {
           )}
           {isSignUp && userType === "seller" && (
             <>
-              <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
-              <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              <div className="flex-container">
+                <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
+                <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+              </div>
               <div className="flex-container">
                 <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required />
-                <select name="category" onChange={handleChange} required>
-                  <option value="">Item Category</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Home & Kitchen">Home & Kitchen</option>
-                  <option value="Automotive">Automotive</option>
-                  <option value="Other">Other</option>
-                </select>
+                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
               </div>
-              <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
-              <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+              
+              <textarea name="description" id="description" placeholder="Description" onChange={handleChange} required></textarea>
             </>
           )}
 
