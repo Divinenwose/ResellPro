@@ -29,7 +29,7 @@ passport.use(
                             name: profile.displayName,
                             email: profile.emails[0].value,
                             password: null,
-                            role: "buyer",
+                            roles: ["buyer"],
                             is_verified_email: true,
                             phone: '',
                         });
@@ -48,7 +48,7 @@ passport.use(
                     await userSocialAccount.save();
                 }
 
-                const token = jwt.sign({ _id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET_KEY);
+                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles }, process.env.JWT_SECRET_KEY);
                 return done(null, { user, token });
             } catch (error) {
                 return done(error, null);
@@ -86,7 +86,7 @@ passport.use(
                             name: profile.displayName,
                             email: profile.id + "@facebook.com",
                             password: null,
-                            role: "buyer",
+                            roles: ["buyer"],
                             is_verified_email: true,
                             phone: '',
                         });
@@ -105,7 +105,7 @@ passport.use(
                     await userSocialAccount.save();
                 }
 
-                const token = jwt.sign({ _id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET_KEY);
+                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles }, process.env.JWT_SECRET_KEY);
                 return done(null, { user, token });
             } catch (error) {
                 return done(error, null);

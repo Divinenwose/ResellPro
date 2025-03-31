@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const BlackListedToken = require("../models/BlackListedToken");
+const UserSocialAccount = require("../models/UserSocialAccount");
 
 require('dotenv').config();
 
@@ -28,6 +29,11 @@ router.post("/signup", async (req, res) => {
     user.name = user.name.trim();
     user.email = user.email.trim();
     user.password = await bcrypt.hash(user.password, 10);
+    if(user.role === "buyer"){
+        user.roles = ["buyer"];
+    } else if(user.role === "seller"){
+        user.roles = ["seller", "buyer"];
+    }
     if(user.phone){
         user.phone = user.phone.trim();
         user.phone_verification_code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -58,6 +64,23 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });
 
+    if(!user.password) {
+        try {
+            const userSocialAccount = await UserSocialAccount.findOne({ user: user._id });
+            const authProvider = userSocialAccount.provider === "google" ? "Google" : "Facebook";
+            return res.status(400).json({
+                success: false,
+                message: `This account is linked to your ${authProvider} account. Please log in with ${authProvider} instead of using a password.`,
+                status_code: 400
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error",
+                status_code: 500
+            });
+        }
+    }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if(!validPassword) return res.status(400).json({
         success: false,
@@ -65,7 +88,7 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });     
 
-    const token = jwt.sign({ _id: user._id, role: user.role, email: user.email, phone: user.phone }, 
+    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone }, 
                             process.env.JWT_SECRET_KEY,
                             { expiresIn: "4h" });
     return res.status(200).json({
@@ -97,25 +120,28 @@ router.post("/logout", async (req, res) => {
         return res.status(400).json({ message: "No token provided" });
     }
     try {
+        
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
+        
         await BlackListedToken.create({
             token,
             expiresAt: new Date(decoded.exp * 1000) // Convert to milliseconds
         });
 
-        return res.status(200).json({
-            success: true,
-            message: "User logged out successfully",
-            status_code: 200
-        });
+        
     } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid token",
-            status_code: 400
+
+        await BlackListedToken.create({
+            token,
+            expiresAt: new Date() // Use current date and time
         });
     }
+
+    return res.status(200).json({
+        success: true,
+        message: "User logged out successfully",
+        status_code: 200
+    });
 
 });
 
@@ -130,7 +156,7 @@ router.get(
             return res.redirect(`${process.env.FRONTEND_URL}/login?error=GoogleAuthFailed`);
         }
         const token = req.user.token;
-        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}&authType=google`);
+        return res.redirect(`${process.env.FRONTEND_URL}/?token=${token}&authType=google`);
     }
 );
 
@@ -145,7 +171,7 @@ router.get(
             return res.redirect(`${process.env.FRONTEND_URL}/login?error=FacebookAuthFailed`);
         }
         const token = req.user.token;
-        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}&authType=facebook`);
+        return res.redirect(`${process.env.FRONTEND_URL}/?token=${token}&authType=facebook`);
     }
 );
 
