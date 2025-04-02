@@ -6,6 +6,7 @@ import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
 import { useAuth } from "../../App";
+import { jwtDecode } from "jwt-decode";
 
 const AuthModal = ({ close }) => {
   const { setAuth } = useAuth();
@@ -48,11 +49,34 @@ const AuthModal = ({ close }) => {
       } else {
         toast.success("User login successful!");
         localStorage.setItem("token", response.data.data.token);
-        setAuth({ token: response.data.data.token, isAuthenticated: true });
-        setTimeout(() => (window.location.href = "/"), 2000); 
+        const storedToken = localStorage.getItem("token");
+        const decodedToken = jwtDecode(storedToken);
+        let isSeller = false;
+        let isBuyer = false;
+        let isAdmin = false;
+        if(decodedToken.roles.includes("seller")){
+          isSeller = true;
+        }
+        if(decodedToken.roles.includes("buyer")){
+          isBuyer = true;
+        }
+        if(decodedToken.roles.includes("admin")){
+          isAdmin = true;
+        }
+        setAuth({ token: storedToken, isAuthenticated: true, isSeller, isBuyer, isAdmin });
+        
+        if(userType === "seller"){
+          setTimeout(() => (window.location.href = "/seller-profile"), 2000); 
+        }
+        if(userType === "buyer"){
+          setTimeout(() => (window.location.href = "/"), 2000); 
+        }
+        
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
+      localStorage.removeItem("token");
+      setAuth({ token: null, isAuthenticated: false, isSeller: false, isBuyer: false, isAdmin: false });
     }
   };
 

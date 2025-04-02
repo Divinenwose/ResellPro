@@ -87,7 +87,13 @@ router.post("/login", async (req, res) => {
         message: "Invalid email or password",
         status_code: 400
     });
-
+    if(!user.roles.includes(req.body.role)){
+        return res.status(400).json({
+            success: false,
+            message: "You are not authorized to login as a " + req.body.role,
+            status_code: 400
+        });
+    }
     if(!user.password) {
         try {
             const userSocialAccount = await UserSocialAccount.findOne({ user: user._id });
