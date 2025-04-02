@@ -21,9 +21,11 @@ const AuthModal = ({ close }) => {
     description: "",
     role: "buyer",
   });
+  const apiURL = import.meta.env.VITE_API_URL;
   
   useEffect(() => {
     setFormData((prev) => ({ ...prev, role: userType }));
+    console.log(apiURL);
   }, [userType]);
 
   const handleChange = (e) => {
@@ -40,7 +42,7 @@ const AuthModal = ({ close }) => {
           : formData // Seller sign-up (all fields)
         : { email: formData.email, password: formData.password, role: userType }; 
 
-      const response = await axios.post(`http://localhost:5000${url}`, payload, {
+      const response = await axios.post(`${apiURL}${url}`, payload, {
         headers: { "Content-Type": "application/json" },
       });
       if (isSignUp) {
@@ -133,10 +135,10 @@ const AuthModal = ({ close }) => {
 
           <div className="or-divider">— Other sign-up options —</div>
           <div className="social-login">
-            <a href="http://localhost:5000/api/auth/google">
+            <a href={`${apiURL}/api/auth/google`}>
               <img className="google-icon" src={GoogleIcon} alt="Google" />
             </a>
-            <a href="http://localhost:5000/api/auth/facebook">
+            <a href={`${apiURL}/api/auth/facebook`}>
               <img className="facebook-icon" src={FacebookIcon} alt="Facebook" />
             </a>
           </div>

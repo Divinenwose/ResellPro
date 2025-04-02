@@ -7,10 +7,11 @@ const SellerProfile = () => {
     const [description, setDescription] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const apiURL = import.meta.env.VITE_API_URL;
     useEffect(() => {
         const fetchSellerProfile = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/seller/profile-details", {
+                const response = await axios.get(`${apiURL}/api/seller/profile-details`, {
                     headers: {
                         Authorization: `Bearer ${auth.token}`
                     }
