@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const dropdownRef = useRef(null);
   const navRef = useRef(null);
+  const apiURL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -64,7 +65,7 @@ const Navbar = () => {
         token: localStorage.getItem("token"),
       };
 
-      const response = await axios.post(`http://localhost:5000${url}`, payload, {
+      const response = await axios.post(`${apiURL}${url}`, payload, {
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` },
       });
       setIsLoggedIn(false);
