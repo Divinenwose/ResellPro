@@ -7,7 +7,7 @@ const SellerProfile = () => {
     const [description, setDescription] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
-    const apiURL = import.meta.env.VITE_API_URL;
+    const apiURL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
     useEffect(() => {
         const fetchSellerProfile = async () => {
             try {
