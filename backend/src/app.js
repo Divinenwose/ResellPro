@@ -4,6 +4,7 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const listingRoutes = require("./routes/listingRoutes");
 const listingCategoryRoutes = require("./routes/listingCategoryRoutes");
+const sellerRoutes = require("./routes/sellerRoutes");
 const cors = require("cors");
 const path = require("path");
 const passport = require("passport");
@@ -26,6 +27,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
 app.use('/api/listing-categories', listingCategoryRoutes);
+app.use('/api/seller', sellerRoutes);
 
 // app.use((req, res, next) => {
 //     res.status(404).json({

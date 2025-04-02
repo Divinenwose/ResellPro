@@ -703,6 +703,30 @@ GET http://localhost:5000/api/listings?search=example&page=2&limit=5
     ```
   - **404 Not Found**: Listing category not found.
 
+## Seller Routes
+
+### GET /api/seller/profile-details
+
+- **Description**: Retrieve the seller's profile details.
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Seller profile details fetched successfully",
+      "status_code": 200,
+      "data": {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "",
+        "businessName": "John Doe's Business",
+        "description": "This is a description of John Doe's business."
+      }
+    }
+    ```
+  - **404 Not Found**: Seller not found.
+
+
 ## Error Handling
 
 All endpoints return a JSON response with a `success` flag, `message`, and `status_code` to indicate the result of the request. 
