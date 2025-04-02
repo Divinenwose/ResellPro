@@ -141,7 +141,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isAuthOpen && (
+      {isAuthOpen && !isLoggedIn && (
         <AuthModal
           close={() => setIsAuthOpen(false)}
           handleLogin={handleLogin}
