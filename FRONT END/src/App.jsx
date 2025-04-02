@@ -6,16 +6,20 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./Pages/Home/Home";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
 import AboutUs from "./Pages/About/About";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/RouteProtection/ProtectedRoute";
 import { jwtDecode } from "jwt-decode";
 import SellerProfile from "./Pages/SellerProfile/SellerProfile";
+import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRoute";
+import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
+import ProtectedAdminRoute from "./components/RouteProtection/ProtectedAdminRoute";
+import Page403 from "./Pages/403/403";
   // Create a context for authentication
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 const App = () => {
-  const [auth, setAuth] = useState({ token: "loading", isAuthenticated: false });
+  const [auth, setAuth] = useState({ token: "loading", isAuthenticated: false, isSeller: false, isBuyer: false });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,17 +33,29 @@ const App = () => {
           if (decodedToken.exp < currentTime) {
             // Token expired, log out user
             localStorage.removeItem("token");
-            setAuth({ token: null, isAuthenticated: false });
+            setAuth({ token: null, isAuthenticated: false, isSeller: false, isBuyer: false });
             window.location.reload();
           } else {
-            setAuth({ token: storedToken, isAuthenticated: true });
+            let isSeller = false;
+            let isBuyer = false;
+            let isAdmin = false;
+            if(decodedToken.roles.includes("seller")){
+              isSeller = true;
+            }
+            if(decodedToken.roles.includes("buyer")){
+              isBuyer = true;
+            }
+            if(decodedToken.roles.includes("admin")){
+              isAdmin = true;
+            }
+            setAuth({ token: storedToken, isAuthenticated: true, isSeller, isBuyer, isAdmin });
           }
         } catch (error) {
           localStorage.removeItem("token");
-          setAuth({ token: null, isAuthenticated: false });
+          setAuth({ token: null, isAuthenticated: false, isSeller: false, isBuyer: false, isAdmin: false });
         }
       } else {
-        setAuth({ token: null, isAuthenticated: false });
+        setAuth({ token: null, isAuthenticated: false, isSeller: false, isBuyer: false, isAdmin: false });
       }
     };
 
@@ -54,10 +70,25 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/403" element={<Page403 />} />
 
         {/* add all protected routes under here */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/seller-profile" element={<SellerProfile />} />
+
+          {/* add all seller protected routes under here */}
+          <Route element={<ProtectedSellerRoute />}>
+            <Route path="/seller-profile" element={<SellerProfile />} />
+          </Route>
+
+          {/* add all buyer protected routes under here */}
+          <Route element={<ProtectedBuyerRoute />}>
+          
+          </Route>
+
+          {/* add all admin protected routes under here */}
+          <Route element={<ProtectedAdminRoute />}>
+            
+          </Route>
         </Route>
       </Routes>
     </AuthContext.Provider>
