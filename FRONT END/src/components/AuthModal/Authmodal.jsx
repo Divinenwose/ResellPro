@@ -21,11 +21,10 @@ const AuthModal = ({ close }) => {
     description: "",
     role: "buyer",
   });
-  const apiURL = import.meta.env.VITE_API_URL;
+  const apiURL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
   
   useEffect(() => {
     setFormData((prev) => ({ ...prev, role: userType }));
-    console.log(apiURL);
   }, [userType]);
 
   const handleChange = (e) => {
