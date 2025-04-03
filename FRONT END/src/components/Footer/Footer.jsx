@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom"; 
 import "./Footer.css";
-import FooterLogo from "../../assets/flogo.png";
+import FooterLogo from "../../assets/fLogo.png";
 import Twitter_icon from "../../assets/twitter.png";
 import Instagram_icon from "../../assets/instagram.png";
 import Facebook_icon from "../../assets/facebook.png";
