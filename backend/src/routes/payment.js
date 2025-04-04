@@ -243,4 +243,102 @@ router.post('/paystack/webhook', async (req, res) => {
     });
   }
 });
+
+//my balance 
+router.get('/paystack/balance', async (req, res) => {
+  try{
+    const balance = await paystackService.getBalance();
+    res.json({
+      success: true,
+      message: "Balance fetched successfully",
+      data: balance.data,
+      status_code: 200
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Balance fetching failed",
+      error: error.message,
+      status_code: 500
+    });
+  }
+});
+
+//make a transfer
+router.post('/paystack/transfer', async (req, res) => {
+  const { amount, transferRecipientCode, reason } = req.body;
+  if(!amount || !transferRecipientCode || !reason){
+    return res.status(400).json({
+      success: false,
+      message: "Amount, transfer recipient code and reason are required",
+      status_code: 400
+    });
+  }
+  try{
+    const transfer = await paystackService.makeTransfer(amount, transferRecipientCode, reason);
+    res.json({
+      success: true,
+      message: "Transfer made successfully",
+      data: transfer,
+      status_code: 200
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Transfer failed",
+      error: error.message,
+      status_code: 500
+    });
+  }
+});
+
+//get bank list
+router.get('/paystack/banklist', async (req, res) => {
+  try{
+    const bankList = await paystackService.getBankList();
+    res.json({  
+      success: true,
+      message: "Bank list fetched successfully",
+      data: bankList.data,
+      status_code: 200
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Bank list fetching failed",
+      error: error.message,
+      status_code: 500
+    });
+  }
+});
+
+//resolve bank account
+router.get('/paystack/resolvebank', async (req, res) => {
+  const { bankCode, accountNumber } = req.body;
+  if(!bankCode || !accountNumber){
+    return res.status(400).json({
+      success: false,
+      message: "Bank code and account number are required",
+      status_code: 400
+    });
+  }
+  try{
+      const bank = await paystackService.resolveBank(bankCode, accountNumber);
+      res.json({
+      success: true,
+      message: "Bank resolved successfully",
+      data: bank.data,
+      status_code: 200
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Bank resolution failed",
+      error: error.message,
+        status_code: 500
+      });
+    }
+
+});
+
 module.exports = router; 

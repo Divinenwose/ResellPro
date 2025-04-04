@@ -8,6 +8,7 @@ const sellerDetailSchema = new mongoose.Schema({
     accountName: { type: String, required: false },
     bankName: { type: String, required: false },
     bankCode: { type: String, required: false },
+    recipientCode: { type: String, required: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
