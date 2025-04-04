@@ -4,13 +4,16 @@ const { Listing, validateListing } = require("../models/Listing");
 const Joi = require('joi');
 const Transaction = require('../models/Transaction');
 const { User } = require('../models/User');
+const crypto = require('crypto');
+const SellerTransaction = require('../models/SellerTransaction');
+const SellerDetail = require('../models/SellerDetail');
 
 const router = express.Router();
 const paystackService = new PaystackService();
 
 // Initialize a transaction
 router.post('/initialize', async (req, res) => {
-  const { email, amount, userId, userType, listingId = null, paymentReason, paymentMethod} = req.body;
+  const { email, amount, userId, userType, listingIds = [], paymentReason, paymentMethod} = req.body;
   
   if (!email || !amount || !userId || !userType || !paymentReason || !paymentMethod) {
     return res.status(400).json({
@@ -21,12 +24,47 @@ router.post('/initialize', async (req, res) => {
   }
 
   const objectIdPattern = /^[0-9a-fA-F]{24}$/;
-  if(listingId){
-    if (!objectIdPattern.test(listingId)) {
+  let listingIdsArray = [];
+  if(listingIds){
+    if (typeof listingIds !== 'object') {
       return res.status(400).json({
         success: false,
-        message: "Invalid listingId",
+        message: "ListingIds must be an array",
         status_code: 400
+      });
+    }
+    for (const listingId of listingIds) {
+      if (!objectIdPattern.test(listingId)) {
+        return res.status(400).json({
+        success: false,
+        message: "Invalid listingId",
+          status_code: 400
+        });
+      }
+
+      const listing = await Listing.findById(listingId);
+      if (!listing) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid listingId",
+          status_code: 400
+        });
+      }
+      const sellerAccountDetails = await SellerDetail.findOne({ user: listing.seller._id });
+      if(!sellerAccountDetails || (sellerAccountDetails && !sellerAccountDetails.accountNumber)){
+        return res.status(400).json({
+          success: false,
+          message: "Seller account details not found",
+          status_code: 400
+        });
+      }
+      listingIdsArray.push({
+        listingId: listingId,
+        amount: listing.price,
+        accountNumber: sellerAccountDetails.accountNumber,
+        accountName: sellerAccountDetails.accountName,
+        bankCode: sellerAccountDetails.bankCode,
+        bankName: sellerAccountDetails.bankName
       });
     }
   }
@@ -36,18 +74,6 @@ router.post('/initialize', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Invalid userId",
-        status_code: 400
-      });
-    }
-  }
-
-  //check if the listingId is valid
-  if (listingId) {
-    const listing = await Listing.findById(listingId);
-    if (!listing) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid listingId",
         status_code: 400
       });
     }
@@ -87,10 +113,24 @@ router.post('/initialize', async (req, res) => {
       paymentStatus: "pending",
       paymentDate: new Date(),
       paymentMetadata: data.data,
-      listingId: listingId,
       verificationResponse: null,
       paymentReason: paymentReason
     });
+
+    //create a new seller transaction in the database
+    if(listingIdsArray.length > 0){
+      for (const listingId of listingIdsArray) {
+        const sellerTransaction = await SellerTransaction.create({
+          reference: data.data.reference,
+          amount: listingId.amount,
+          listingId: listingId.listingId,
+          accountNumber: listingId.accountNumber,
+          accountName: listingId.accountName,
+          bankCode: listingId.bankCode,
+          bankName: listingId.bankName
+        });
+      }
+    }
 
     res.json({
       success: true,
@@ -156,4 +196,51 @@ router.get('/verify/:reference', async (req, res) => {
   }
 });
 
+//paystack webhook
+router.post('/paystack/webhook', async (req, res) => {
+  const secret = process.env.PAYSTACK_SECRET_KEY;
+  try{
+    const hash = crypto.createHmac('sha512', secret).update(JSON.stringify(req.body)).digest('hex');
+    console.log(hash, req.headers['x-paystack-signature']);
+    if (hash == req.headers['x-paystack-signature']) {
+      console.log("hash is valid");
+      const event = req.body;
+      console.log(req.body);
+      if(event.event && (event.event === "charge.success" || event.event === "transfer.success" || event.event === "transfer.failed" || event.event === "transfer.reversed")){
+        const transaction = await Transaction.findOne({ reference: event.data.reference });
+        if(transaction){
+          transaction.paymentStatus = event.data.status;
+          transaction.paymentDate = new Date();
+          transaction.webhookResponse = event.data;
+          await transaction.save();
+
+          //update the seller transaction
+          if(event.event === "charge.success" && event.data.status === "success"){
+            const sellerTransactions = await SellerTransaction.find({ reference: event.data.reference });
+            if(sellerTransactions){
+              for (const sellerTransaction of sellerTransactions) {
+                sellerTransaction.status = "to_be_paid";
+                await sellerTransaction.save();
+              }
+            }
+          }
+        }
+      }
+    }
+
+    res.json({
+      success: true,
+      message: "Webhook received successfully",
+      status_code: 200
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Webhook verification failed",
+      error: error.message,
+      status_code: 500
+    });
+  }
+});
 module.exports = router; 

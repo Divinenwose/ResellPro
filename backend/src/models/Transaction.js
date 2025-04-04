@@ -14,11 +14,6 @@ const transactionSchema = new mongoose.Schema({
         ref: "User", 
         required: true 
     },
-    listingId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Listing", 
-        required: false 
-    },
     userType: { 
         type: String, 
         required: true 
@@ -48,6 +43,10 @@ const transactionSchema = new mongoose.Schema({
         required: false 
     },
     verificationResponse: { 
+        type: Object, 
+        required: false 
+    },
+    webhookResponse: { 
         type: Object, 
         required: false 
     },

@@ -39,10 +39,39 @@ router.get("/profile-details", sellerMiddleware, async (req, res) => {
     }
 });
 
-router.put("/profile-details", sellerMiddleware, (req, res) => {
-    res.send("Seller profile");
-});
+router.put("/profile-details", sellerMiddleware, async (req, res) => {
+    const user_id = req.user._id;
+    const { businessName, description, accountNumber, accountName, bankCode, bankName, phone } = req.body;
 
+    try {
+        const sellerDetail = await SellerDetail.updateOne(
+            { user: user_id }, 
+            { $set: { businessName, description, accountNumber, accountName, bankCode, bankName, phone } }, 
+            { new: true }
+        );
+        if(!sellerDetail){
+            return res.status(404).json({
+                success: false,
+                message: "Seller details not found",
+                status_code: 404
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Seller details updated",
+            status_code: 200,
+            data: sellerDetail
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            status_code: 500
+        });
+    }
+});
 module.exports = router;
 
 

@@ -720,11 +720,49 @@ GET http://localhost:5000/api/listings?search=example&page=2&limit=5
         "email": "john@example.com",
         "phone": "",
         "businessName": "John Doe's Business",
-        "description": "This is a description of John Doe's business."
+        "description": "This is a description of John Doe's business.",
+        "accountNumber": "1234567890",
+        "accountName": "John Doe",
+        "bankCode": "023",
+        "bankName": "First Bank"
       }
     }
     ```
   - **404 Not Found**: Seller not found.
+
+### PUT /api/seller/profile-details
+
+- **Description**: Update the seller's profile details.
+- **Request Body**:
+  ```json
+  {
+    "businessName": "John Doe's Business",
+    "description": "This is a description of John Doe's business.",
+    "accountNumber": "1234567890",
+    "accountName": "John Doe",
+    "bankCode": "023",
+    "bankName": "First Bank",
+    "phone": "08012345678"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Seller details updated successfully",
+      "status_code": 200,
+      "data": {
+        "businessName": "John Doe's Business",
+        "description": "This is a description of John Doe's business.", 
+        "accountNumber": "1234567890",
+        "accountName": "John Doe",
+        "bankCode": "023",
+        "bankName": "First Bank",
+        "phone": "08012345678"
+      }
+    }
+    ```
 
 ### POST /api/payments/initialize
 
@@ -737,7 +775,8 @@ GET http://localhost:5000/api/listings?search=example&page=2&limit=5
     "userId": "60cf601a372f86ecf68759e3",
     "userType": "seller",
     "paymentReason": "Payment for listing",
-    "paymentMethod": "paystack"
+    "paymentMethod": "paystack",
+    "listingIds": ["60cf601a372f86ecf68759e2", "60cf601a372f86ecf68759e3"]
   }
   ```
 - **Response**:
