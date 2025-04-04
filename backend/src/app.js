@@ -13,6 +13,7 @@ const {User} = require("./models/User");
 const UserSocialAccount = require("./models/UserSocialAccount");
 const {Listing} = require("./models/Listing");
 const ListingImage = require("./models/ListingImage");
+const paymentRoutes = require('./routes/payment');
 require('dotenv').config();
 
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
 app.use('/api/listing-categories', listingCategoryRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // app.use((req, res, next) => {
 //     res.status(404).json({

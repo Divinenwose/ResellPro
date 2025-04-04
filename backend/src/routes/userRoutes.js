@@ -4,7 +4,7 @@ const router = express.Router();
 const { buyerMiddleware } = require("../middlewares/roleMiddleware");
 
 router.get("/", async (req, res) => {
-    const users = await User.find().select("-password -_id");
+    const users = await User.find().select("-password");
 
     return res.status(200).json({
         success: true,
