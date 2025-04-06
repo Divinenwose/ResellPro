@@ -720,12 +720,189 @@ GET http://localhost:5000/api/listings?search=example&page=2&limit=5
         "email": "john@example.com",
         "phone": "",
         "businessName": "John Doe's Business",
-        "description": "This is a description of John Doe's business."
+        "description": "This is a description of John Doe's business.",
+        "accountNumber": "1234567890",
+        "accountName": "John Doe",
+        "bankCode": "023",
+        "bankName": "First Bank"
       }
     }
     ```
   - **404 Not Found**: Seller not found.
 
+### PUT /api/seller/profile-details
+
+- **Description**: Update the seller's profile details.
+- **Request Body**:
+  ```json
+  {
+    "businessName": "John Doe's Business",
+    "description": "This is a description of John Doe's business.",
+    "accountNumber": "1234567890",
+    "accountName": "John Doe",
+    "bankCode": "023",
+    "bankName": "First Bank",
+    "phone": "08012345678"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Seller details updated successfully",
+      "status_code": 200,
+      "data": {
+        "businessName": "John Doe's Business",
+        "description": "This is a description of John Doe's business.", 
+        "accountNumber": "1234567890",
+        "accountName": "John Doe",
+        "bankCode": "023",
+        "bankName": "First Bank",
+        "phone": "08012345678"
+      }
+    }
+    ```
+
+### POST /api/payments/initialize
+
+- **Description**: Initialize a payment transaction.
+- **Request Body**:
+  ```json
+  {
+    "email": "user@example.com",
+    "amount": 100.00,
+    "userId": "60cf601a372f86ecf68759e3",
+    "userType": "seller",
+    "paymentReason": "Payment for listing",
+    "paymentMethod": "paystack",
+    "listingIds": ["60cf601a372f86ecf68759e2", "60cf601a372f86ecf68759e3"]
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+
+    {
+      "success": true,
+      "message": "Transaction initialized successfully",
+      "data": {
+          "status": true,
+          "message": "Authorization URL created",
+          "data": {
+              "authorization_url": "https://checkout.paystack.com/7s7pffrn21w6zsx",
+              "access_code": "7s7pffrn21w6zsx",
+              "reference": "il1n0ncpel"
+          }
+      },
+      "status_code": 200
+    }   
+    ```
+  - **400 Bad Request**: Validation error or invalid payment method.
+
+### GET /api/payments/verify/:reference
+
+- **Description**: Verify a payment transaction.
+- **Request Params**:
+  ```
+  {
+    "reference": "il1n0ncpel"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "Transaction verified successfully",
+      "data": {
+          "status": true,
+          "message": "Verification successful",
+          "data": {
+              "id": 4841792480,
+              "domain": "test",
+              "status": "success",
+              "reference": "il1n0ncpel",
+              "receipt_number": null,
+              "amount": 50000,
+              "message": null,
+              "gateway_response": "Successful",
+              "paid_at": "2025-04-04T09:40:59.000Z",
+              "created_at": "2025-04-04T09:40:46.000Z",
+              "channel": "card",
+              "currency": "NGN",
+              "ip_address": "197.211.63.189",
+              "metadata": "",
+              "log": {
+                  "start_time": 1743759657,
+                  "time_spent": 3,
+                  "attempts": 1,
+                  "errors": 0,
+                  "success": true,
+                  "mobile": false,
+                  "input": [],
+                  "history": [
+                      {
+                          "type": "action",
+                          "message": "Attempted to pay with card",
+                          "time": 2
+                      },
+                      {
+                          "type": "success",
+                          "message": "Successfully paid with card",
+                          "time": 3
+                      }
+                  ]
+              },
+              "fees": 750,
+              "fees_split": null,
+              "authorization": {
+                  "authorization_code": "AUTH_wlchuv78z6",
+                  "bin": "408408",
+                  "last4": "4081",
+                  "exp_month": "12",
+                  "exp_year": "2030",
+                  "channel": "card",
+                  "card_type": "visa ",
+                  "bank": "TEST BANK",
+                  "country_code": "NG",
+                  "brand": "visa",
+                  "reusable": true,
+                  "signature": "SIG_j4nATKyBZlsCzqQldwIE",
+                  "account_name": null
+              },
+              "customer": {
+                  "id": 258541514,
+                  "first_name": null,
+                  "last_name": null,
+                  "email": "akinolaakinkunmifa@gmail.com",
+                  "customer_code": "CUS_5u47t2hyjwdgdmm",
+                  "phone": null,
+                  "metadata": null,
+                  "risk_action": "default",
+                  "international_format_phone": null
+              },
+              "plan": null,
+              "split": {},
+              "order_id": null,
+              "paidAt": "2025-04-04T09:40:59.000Z",
+              "createdAt": "2025-04-04T09:40:46.000Z",
+              "requested_amount": 50000,
+              "pos_transaction_data": null,
+              "source": null,
+              "fees_breakdown": null,
+              "connect": null,
+              "transaction_date": "2025-04-04T09:40:46.000Z",
+              "plan_object": {},
+              "subaccount": {}
+          }
+      },
+      "status_code": 200
+    }
+    ```
+  - **400 Bad Request**: Transaction not found or invalid reference.
+  - **401 Unauthorized**: User not authorized to verify this transaction.
+  - **404 Not Found**: Transaction not found.
 
 ## Error Handling
 
