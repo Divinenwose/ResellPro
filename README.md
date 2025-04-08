@@ -52,6 +52,7 @@ ReSellPro is a web application that allows users to list products for sale and p
 
 5. **Run the Application**:
    ```bash
+   npm run seed:users
    npm start
    ```
 
