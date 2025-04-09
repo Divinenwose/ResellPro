@@ -1,0 +1,63 @@
+.content-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-header-left {
+    width: 70%;
+}
+
+.content-header-left input {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.content-header-left-search-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.content-header-control {
+    width: 30%;
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+
+.bell-icon {
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #FF9738;
+    cursor: pointer;
+}
+
+.dropdownToggle {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 50%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+}
+
+.dropdown-menu li:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+
