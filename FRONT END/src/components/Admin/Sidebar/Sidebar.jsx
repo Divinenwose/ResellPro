@@ -7,23 +7,27 @@ import Logo from '../../../assets/Logo.png';
 import Avatar from '../../../assets/adminAvatar.png';
 
 
-const Sidebar = () => {
+const Sidebar = ({tab, setTab}) => {
+
     const windowWidth = window.innerWidth;
     const sidebarItems = [
         {
             icon: faHome,
             text: "Dashboard",
-            link: "/admin-dashboard"
+            link: "/admin-dashboard",
+            name: "main"
         },
         {
             icon: faUser,
             text: "User management",
-            link: "/admin-dashboard/user-management"
+            link: "/admin-dashboard/user-management",
+            name: "user"
         },
         {
             icon: faMoneyBill,
             text: "Transactions",
-            link: "/admin-dashboard/transactions"
+            link: "/admin-dashboard/transactions",
+            name: "transactions"
         }
     ]
     return (
@@ -49,11 +53,11 @@ const Sidebar = () => {
             <div className="dashboard-sidebar-items">
                 <ul>
                     {sidebarItems.map((item, index) => (
-                        <li key={index} className={` ${index === 0 ? 'active' : ''}`}>
-                            <Link to={item.link} className={`dashboard-sidebar-item `}>
+                        <li key={index} className={` ${tab === item.name ? 'active' : ''}`}>
+                            <a className={`dashboard-sidebar-item ${tab === item.name ? 'active' : ''}`} onClick={() => setTab(item.name)}>
                                 <FontAwesomeIcon icon={item.icon} />
                                 <p>{item.text}</p>
-                            </Link>
+                            </a>
                         </li>
                     ))}
                 </ul>

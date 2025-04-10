@@ -101,7 +101,7 @@
   .dashboard-sidebar-item {
     display: flex;
     align-items: center;
-    /* justify-content: center; */
+    cursor: pointer;
     gap: 10px;
     border-left: 1px solid #FF9738A8;
     border-radius: 8px;

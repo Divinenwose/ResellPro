@@ -5,7 +5,7 @@ import "./Header.css";
 import { faBell, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Logo from '../../../assets/Logo.png';
 
-const Header = () => {
+const Header = ({tab, setTab}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
     let windowWidth = window.innerWidth;
@@ -46,17 +46,17 @@ const Header = () => {
                                 windowWidth <= 768 && (
                                     <>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" onClick={() => setTab("main")}>
                                             Dashboard
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" onClick={() => setTab("user")}>
                                         User management
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" onClick={() => setTab("transactions")}>
                                             Transactions
                                         </a>
                                     </li>
