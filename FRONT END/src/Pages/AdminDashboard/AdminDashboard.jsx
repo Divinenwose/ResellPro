@@ -4,6 +4,8 @@ import Footer from "../../components/Footer/Footer";
 import Sidebar from "../../components/Admin/Sidebar/Sidebar";
 import Header from "../../components/Admin/Header/Header";
 import MainDashboard from "../../components/Admin/MainDashboard/MainDashboard";
+import UserManagement from "../../components/Admin/UserManagement/UserManagement";
+import Transactions from "../../components/Admin/Transactions/Transactions";
 const AdminDashboard = () => {
     let windowWidth = window.innerWidth;
   return (
@@ -23,7 +25,9 @@ const AdminDashboard = () => {
                 )}
                 
                 <div className="dashboard-content-body">
-                    <MainDashboard />
+                    {/* <MainDashboard /> */}
+                    {/* <UserManagement /> */}
+                    <Transactions />
                 </div>
             </div>
         </div>
