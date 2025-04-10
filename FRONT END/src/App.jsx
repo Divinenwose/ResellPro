@@ -13,6 +13,7 @@ import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRo
 import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
 import ProtectedAdminRoute from "./components/RouteProtection/ProtectedAdminRoute";
 import Page403 from "./Pages/403/403";
+import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
   // Create a context for authentication
 const AuthContext = createContext();
 
@@ -65,12 +66,14 @@ const App = () => {
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       <ToastContainer /> 
-      <Navbar />
+      { location.pathname !== "/admin-dashboard" && <Navbar />}
+      
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/403" element={<Page403 />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
         {/* add all protected routes under here */}
         <Route element={<ProtectedRoute />}>

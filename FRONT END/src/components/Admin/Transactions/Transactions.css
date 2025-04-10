@@ -1,0 +1,26 @@
+.transaction-history-container, .transaction-history-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.transaction-history {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.transaction-history-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.transaction-history-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
