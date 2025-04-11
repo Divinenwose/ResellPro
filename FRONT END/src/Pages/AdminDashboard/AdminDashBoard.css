@@ -1,0 +1,41 @@
+.admin-dashboard-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* align-items: center; */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-content {
+    width: 100%;
+    padding: 15px 10px;
+
+}
+
+.dashboard-content-body{
+    margin-top: 2.5rem;
+}
+
+.content-header-left {
+    width: 70%;
+}
+
+.content-header-left-search input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.content-header-left-search{
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
