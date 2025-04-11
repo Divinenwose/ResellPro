@@ -8,6 +8,11 @@ import RecycledPage from "./Pages/Recycled/recycled";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
 import AboutUs from "./Pages/About/About";
 import ProtectedRoute from "./components/RouteProtection/ProtectedRoute";
+import Page403 from "./Pages/403/403";
+import SellerProfile from "./Pages/SellerProfile/SellerProfile";
+import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRoute";
+import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
+import ProtectedAdminRoute from "./components/RouteProtection/ProtectedAdminRoute";
 import { jwtDecode } from "jwt-decode";
   // Create a context for authentication
 const AuthContext = createContext();

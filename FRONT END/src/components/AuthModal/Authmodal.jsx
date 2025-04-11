@@ -8,6 +8,8 @@ import FacebookIcon from "../../assets/facebook.png";
 import { useAuth } from "../../App";
 import { jwtDecode } from "jwt-decode";
 
+const apiURL = "http://localhost:5000"; 
+
 const AuthModal = ({ close }) => {
   const { setAuth } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,6 +23,8 @@ const AuthModal = ({ close }) => {
     description: "",
     role: "buyer",
   });
+
+  
   
   useEffect(() => {
     setFormData((prev) => ({ ...prev, role: userType }));
