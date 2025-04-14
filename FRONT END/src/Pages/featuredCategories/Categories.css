@@ -272,6 +272,20 @@
   padding-top: 3px;
 }
 
+.product .categories-btn{
+  background: #FF9738;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin:  10px;
+  font-weight: 600;
+  outline: none;
+  width: 85%;
+}
+
 .no-products-container{
   font-family: Montserrat;
   font-weight: 400;

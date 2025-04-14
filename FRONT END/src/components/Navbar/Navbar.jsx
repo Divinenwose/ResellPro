@@ -6,6 +6,7 @@ import Logo from "../../assets/Logo.png";
 import Notification_icon from "../../assets/notification.png";
 import { toast } from "react-toastify";
 import axios from "axios";
+import cart_icon from "../../assets/shopping-cart.png";
 
 const Navbar = () => {
   const location = useLocation();
@@ -105,6 +106,12 @@ const Navbar = () => {
             <Link to="/categories">Featured categories</Link>
           </li>
         </ul>
+        <div className="cart-icon-container">
+          <Link to="/Cart">
+            <img src={cart_icon} alt="shopping-cart-icon" />
+            <div className="nav-cart-count">0</div> 
+          </Link>
+        </div>
 
         <div className="nav-btn-container">
           <img className="notification-icon" src={Notification_icon} alt="Notifications" />
@@ -120,7 +127,7 @@ const Navbar = () => {
               <div className="drop-down-container">
                 <ul className={`dropdown ${isDropdownOpen ? "active" : ""}`}>
                   <li>
-                    <Link to="/dashboard">My Dashboard</Link>
+                    <Link to="/dashboard">Orders</Link>
                   </li>
                   <li onClick={handleLogout}>Sign Out</li>
                 </ul>

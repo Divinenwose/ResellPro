@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Authmodal.css";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
-import { useAuth } from "../../App";
+import { useAuth } from "../../App.jsx";
 import { jwtDecode } from "jwt-decode";
 
 const apiURL = "http://localhost:5000"; 

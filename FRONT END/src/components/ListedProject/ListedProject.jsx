@@ -75,6 +75,7 @@ const ListedProject = () => {
               <p className="card-price">{item.price}</p>
               <p className="card-description">{item.description}</p>
               <p className="card-state">{item.state}</p>
+              <button className="add-btn">Add to Cart</button> 
             </div>
           ))}
       </div>

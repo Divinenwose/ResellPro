@@ -140,6 +140,19 @@
     padding-block: 6px;
   }
   
+  .card .add-btn{
+    background: #FF9738;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin:  10px;
+    font-weight: 600;
+    width: 85%;
+    outline: none;
+  }
 
   .writeup{
     display: flex;

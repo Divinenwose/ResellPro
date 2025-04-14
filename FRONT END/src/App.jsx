@@ -12,10 +12,9 @@ import Page403 from "./Pages/403/403";
 import SellerProfile from "./Pages/SellerProfile/SellerProfile";
 import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRoute";
 import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
-import ProtectedAdminRoute from "./components/RouteProtection/ProtectedAdminRoute";
 import { jwtDecode } from "jwt-decode";
-import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
-  // Create a context for authentication
+
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -75,7 +74,6 @@ const App = () => {
         <Route path="/recycled" element={<RecycledPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/403" element={<Page403 />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
         {/* add all protected routes under here */}
         <Route element={<ProtectedRoute />}>
@@ -88,11 +86,6 @@ const App = () => {
           {/* add all buyer protected routes under here */}
           <Route element={<ProtectedBuyerRoute />}>
           
-          </Route>
-
-          {/* add all admin protected routes under here */}
-          <Route element={<ProtectedAdminRoute />}>
-            
           </Route>
         </Route>
       </Routes>
