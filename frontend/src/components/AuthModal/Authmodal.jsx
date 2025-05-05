@@ -8,8 +8,7 @@ import FacebookIcon from "../../assets/facebook.png";
 import { useAuth } from "../../App.jsx";
 import { jwtDecode } from "jwt-decode";
 
-const apiURL = "http://localhost:5000"; 
-
+const apiURL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 const AuthModal = ({ close }) => {
   const { setAuth } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
