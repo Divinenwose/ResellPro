@@ -13,8 +13,8 @@ import SellerProfile from "./Pages/SellerProfile/SellerProfile";
 import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRoute";
 import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
 import { jwtDecode } from "jwt-decode";
-
-
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -74,6 +74,8 @@ const App = () => {
         <Route path="/recycled" element={<RecycledPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/403" element={<Page403 />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* add all protected routes under here */}
         <Route element={<ProtectedRoute />}>
