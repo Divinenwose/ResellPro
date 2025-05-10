@@ -184,3 +184,188 @@
     font-size: px;   
 }
   
+
+/* Tablet & small laptop */
+@media (max-width: 1024px) {
+  .auth-container {
+    width: 90%;
+    height: auto;
+    padding: 25px;
+    top: 20px;
+  }
+
+  .auth-container .auth-btn {
+    width: 80%;
+  }
+
+  .toggle-container {
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .toggle-container button {
+    width: 48%;
+  }
+
+  .social-login {
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .flex-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .auth-container {
+    width: 95%;
+    padding: 20px;
+    top: 10px;
+  }
+
+  .auth-container h2 {
+    font-size: 20px;
+  }
+
+  .auth-container p,
+  .or-divider,
+  .auth-footer {
+    font-size: 13px;
+  }
+
+  .toggle-container {
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .toggle-container button {
+    width: 50%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .auth-container .auth-btn {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .social-login {
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .google-icon, .facebook-icon img {
+    width: 24px;
+  }
+
+  .flex-container {
+    flex-direction: column;
+  }
+
+  .flex-container input,
+  .flex-container select {
+    font-size: 14px;
+    height: 38px;
+  }
+
+  .auth-container input,
+  .auth-container textarea {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .auth-container {
+    width: 98%;
+    padding: 16px;
+    top: 0;
+    height: auto;
+    max-height: 99vh;
+    overflow-y: auto;
+  }
+
+  .auth-container h2 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .auth-container p,
+  .or-divider,
+  .auth-footer {
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 10px;
+  }
+
+  .toggle-container {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .toggle-container button {
+    width: 48%;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .auth-container form {
+    gap: 6px;
+  }
+
+  .auth-container input,
+  .auth-container textarea {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .auth-container .auth-btn {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .social-login {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .google-icon,
+  .facebook-icon img {
+    width: 22px;
+  }
+
+  .flex-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flex-container input,
+  .flex-container select {
+    font-size: 13px;
+    height: 39px;
+    padding: 6px;
+  }
+
+  .auth-container .close-btn {
+    top: 8px;
+    right: 10px;
+    font-size: 18px;
+  }
+
+  .auth-footer{
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+}
