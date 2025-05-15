@@ -16,6 +16,7 @@ const {Listing} = require("./models/Listing");
 const ListingImage = require("./models/ListingImage");
 const paymentRoutes = require('./routes/payment');
 const { adminMiddleware } = require("./middlewares/roleMiddleware");
+const seedUsers = require("./seeders/userSeeder");
 require('dotenv').config();
 
 const app = express();
@@ -54,5 +55,14 @@ app.delete("/api/remove-all-data", async (req, res) => {
         status_code: 200
     });
 });
-
+app.post('/seed/users', async (req, res) => {
+    try {
+      await mongoose.connect(process.env.MONGO_URI);
+      const result = await seedUsers();
+      res.status(200).json({ success: true, message: result });
+    } catch (err) {
+      console.error('Seeder failed:', err);
+      res.status(500).json({ success: false, message: 'Seeding failed', error: err.message });
+    }
+  });
 module.exports = app;
