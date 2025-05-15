@@ -1,5 +1,5 @@
 import React from "react";
-import "./MainDashboard.css";
+import "./MainDashBoard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faFile, faDollarSign, faCheckSquare, faTimesSquare } from "@fortawesome/free-solid-svg-icons";
 import kettle from "../../assets/kettle.jpeg";
