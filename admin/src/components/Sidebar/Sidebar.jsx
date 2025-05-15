@@ -5,10 +5,11 @@ import { faHome, faUser, faMoneyBill, faCreditCard } from '@fortawesome/free-sol
 import "./Sidebar.css";
 import Logo from "../../assets/Logo.png";
 import Avatar from "../../assets/adminAvatar.png";
+import { useAuth } from '../../App';
 
 
 const Sidebar = ({tab, setTab}) => {
-
+    const { auth } = useAuth();
     const windowWidth = window.innerWidth;
     const sidebarItems = [
         {
@@ -44,7 +45,7 @@ const Sidebar = ({tab, setTab}) => {
                             <img src={Avatar} alt="Avatar" />
                         </div>
                         <div className="dashboard-name-section-text">
-                            <p className="dashboard-name-section-text-name">Favour Osaro</p>
+                            <p className="dashboard-name-section-text-name">{auth.name}</p>
                             <p className="dashboard-name-section-text-role">Admin Panel</p>
                         </div>
                     </div>
