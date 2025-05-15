@@ -32,21 +32,21 @@ const featuredCategories = [
 ];
 
 const products = [
-  { id: 1, name: "6L Oraimo Airfryer", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Kitchen Appliances", price: 65000, image: item1 },
-  { id: 2, name: "Smartphone", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Phones & Accessories", price: 120000, image: item2 },
-  { id: 3, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Cars", price: 5000000, image: item3 },
-  { id: 4, name: "Apartment for Rent", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Properties", price: 700000, image: item4 },
-  { id: 5, name: "Men Sneakers", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Men Fashion", price: 35000, image: item5 },
-  { id: 6, name: "Women Handbag", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Women Fashion", price: 25000, image: item6 },
-  { id: 7, name: "Skincare Set", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
-  { id: 8, name: "Laptop", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Phones & Accessories", price: 300000, image: item8 },
-  { id: 9, name: "Blender", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Kitchen Appliances", price: 50000, image: item9 },
-  { id: 10, name: "Luxury Wristwatch", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Men Fashion", price: 75000, image: item10 },
-  { id: 11, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Cars", price: 45000, image: item7 },
-  { id: 12, name: "Skincare Set", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Skincare Products", price: 45000, image: item7 },
-  { id: 13, name: "Apartment for Rent", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Properties", price: 45000, image: item7 },
-  { id: 14, name: "Smartphone", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Phones & Accessories", price: 45000, image: item7 },
-  { id: 15, name: "Toyota Corolla", description:"Eliminate the excess fat associated with frying and create a range of delicious meals using the hot....", category: "Cars", price: 45000, image: item7 },
+  { id: 1, name: "6L Oraimo Airfryer",  category: "Kitchen Appliances", price: 65000, image: item1 },
+  { id: 2, name: "Smartphone",  category: "Phones & Accessories", price: 120000, image: item2 },
+  { id: 3, name: "Toyota Corolla",  category: "Cars", price: 5000000, image: item3 },
+  { id: 4, name: "Apartment for Rent",  category: "Properties", price: 700000, image: item4 },
+  { id: 5, name: "Men Sneakers",  category: "Men Fashion", price: 35000, image: item5 },
+  { id: 6, name: "Women Handbag",  category: "Women Fashion", price: 25000, image: item6 },
+  { id: 7, name: "Skincare Set",  category: "Skincare Products", price: 45000, image: item7 },
+  { id: 8, name: "Laptop",  category: "Phones & Accessories", price: 300000, image: item8 },
+  { id: 9, name: "Blender",  category: "Kitchen Appliances", price: 50000, image: item9 },
+  { id: 10, name: "Luxury Wristwatch",  category: "Men Fashion", price: 75000, image: item10 },
+  { id: 11, name: "Toyota Corolla",  category: "Cars", price: 45000, image: item7 },
+  { id: 12, name: "Skincare Set",  category: "Skincare Products", price: 45000, image: item7 },
+  { id: 13, name: "Apartment for Rent",  category: "Properties", price: 45000, image: item7 },
+  { id: 14, name: "Smartphone",  category: "Phones & Accessories", price: 45000, image: item7 },
+  { id: 15, name: "Toyota Corolla",  category: "Cars", price: 45000, image: item7 },
 ];
 
 const priceRanges = [
@@ -157,7 +157,6 @@ const CategoriesPage = () => {
                 <img src={product.image} alt={product.name} className="product-image" />
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-price">₦{product.price.toLocaleString()}</p>
-                <p className="product-description">{product.description}</p>
                 <button className="categories-btn">Add to Cart</button> 
               </div>
             ))

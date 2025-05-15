@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthModal from "../../components/AuthModal/Authmodal";
+import { CartContext } from "../../CartContext"; 
 import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 import Notification_icon from "../../assets/notification.png";
@@ -9,11 +10,10 @@ import axios from "axios";
 import cart_icon from "../../assets/shopping-cart.png";
 
 const Navbar = () => {
+  const { cartCount } = useContext(CartContext); 
   const location = useLocation();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("token") ? true : false
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("token") ? true : false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [authAction, setAuthAction] = useState("signup");
@@ -79,6 +79,7 @@ const Navbar = () => {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+  
 
   return (
     <nav className="navbar" ref={navRef}>
@@ -87,6 +88,7 @@ const Navbar = () => {
           <img className="nav-logo" src={Logo} alt="Logo" />
         </Link>
       </div>
+      
       <button className="nav-toggle" onClick={() => setIsNavOpen(!isNavOpen)}>
         ☰
       </button>
@@ -105,46 +107,59 @@ const Navbar = () => {
           <li className={location.pathname === "/categories" ? "active" : ""}>
             <Link to="/categories">Featured categories</Link>
           </li>
+          {!isLoggedIn && (
+            <li>
+              <button
+                className="nav-btn-signup"
+                onClick={() => {
+                  setIsAuthOpen(true);
+                  setAuthAction("signup");
+                }}
+              >
+                Register Now
+              </button>
+            </li>
+          )}
         </ul>
+      </div>
+
+      <div className="navbar-icons">
         <div className="cart-icon-container">
-          <Link to="/Cart">
+          <Link to="/cart">
             <img src={cart_icon} alt="shopping-cart-icon" />
-            <div className="nav-cart-count">0</div> 
+            <div className="nav-cart-count">{cartCount}</div>
           </Link>
         </div>
-
-        <div className="nav-btn-container">
-          <img className="notification-icon" src={Notification_icon} alt="Notifications" />
-
-          {isLoggedIn ? (
-            <div className="user-menu" ref={dropdownRef}>
-              <span
-                className="user-icon"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                👤
-              </span>
-              <div className="drop-down-container">
-                <ul className={`dropdown ${isDropdownOpen ? "active" : ""}`}>
-                  <li>
-                    <Link to="/dashboard">Orders</Link>
-                  </li>
-                  <li onClick={handleLogout}>Sign Out</li>
-                </ul>
-              </div>
-            </div>
-          ) : (
-            <button
-              className="nav-btn"
-              onClick={() => {
-                setIsAuthOpen(true);
-                setAuthAction("signup");
-              }}
+        <img className="notification-icon" src={Notification_icon} alt="Notifications" />
+        
+        {isLoggedIn ? (
+          <div className="user-menu" ref={dropdownRef}>
+            <span
+              className="user-icon"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              Register Now
-            </button>
-          )}
-        </div>
+              👤
+            </span>
+            <div className="drop-down-container">
+              <ul className={`dropdown ${isDropdownOpen ? "active" : ""}`}>
+                <li>
+                  <Link to="/dashboard">Orders</Link>
+                </li>
+                <li onClick={handleLogout}>Sign Out</li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <button
+            className="nav-btn"
+            onClick={() => {
+              setIsAuthOpen(true);
+              setAuthAction("signup");
+            }}
+          >
+            Register Now
+          </button>
+        )}
       </div>
 
       {isAuthOpen && !isLoggedIn && (

@@ -48,7 +48,7 @@ passport.use(
                     await userSocialAccount.save();
                 }
 
-                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles }, process.env.JWT_SECRET_KEY, { expiresIn: "4h" });
+                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles, name: user.name }, process.env.JWT_SECRET_KEY, { expiresIn: "4h" });
                 return done(null, { user, token });
             } catch (error) {
                 return done(error, null);
@@ -105,7 +105,7 @@ passport.use(
                     await userSocialAccount.save();
                 }
 
-                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles }, process.env.JWT_SECRET_KEY, { expiresIn: "4h" });
+                const token = jwt.sign({ _id: user._id, email: user.email, roles: user.roles, name: user.name }, process.env.JWT_SECRET_KEY, { expiresIn: "4h" });
                 return done(null, { user, token });
             } catch (error) {
                 return done(error, null);

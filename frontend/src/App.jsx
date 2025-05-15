@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./Pages/Home/Home";
 import RecycledPage from "./Pages/Recycled/recycled";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
+import Cart from "./Pages/Cart/Cart";
 import AboutUs from "./Pages/About/About";
 import ProtectedRoute from "./components/RouteProtection/ProtectedRoute";
 import Page403 from "./Pages/403/403";
@@ -13,8 +14,8 @@ import SellerProfile from "./Pages/SellerProfile/SellerProfile";
 import ProtectedSellerRoute from "./components/RouteProtection/ProtectedSellerRoute";
 import ProtectedBuyerRoute from "./components/RouteProtection/ProtectedBuyerRoute";
 import { jwtDecode } from "jwt-decode";
-
-
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -73,17 +74,20 @@ const App = () => {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/recycled" element={<RecycledPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/403" element={<Page403 />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* add all protected routes under here */}
+        
         <Route element={<ProtectedRoute />}>
 
-          {/* add all seller protected routes under here */}
+         
           <Route element={<ProtectedSellerRoute />}>
             <Route path="/seller-profile" element={<SellerProfile />} />
           </Route>
 
-          {/* add all buyer protected routes under here */}
+          
           <Route element={<ProtectedBuyerRoute />}>
           
           </Route>

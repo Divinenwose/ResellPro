@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const { User, validateUser, validateLogin } = require("../models/User");
@@ -7,8 +8,10 @@ const passport = require("passport");
 const BlackListedToken = require("../models/BlackListedToken");
 const UserSocialAccount = require("../models/UserSocialAccount");
 const SellerDetail = require("../models/SellerDetail");
+const PasswordReset = require("../models/PasswordReset");
+const { sendEmail } = require('../utils/mailers');
+const { renderTemplate } = require('../utils/templateEngine');
 
-require('dotenv').config();
 
 router.post("/signup", async (req, res) => {
     console.log(req.body);
@@ -118,7 +121,78 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });     
 
-    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone }, 
+    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone, name: user.name }, 
+                            process.env.JWT_SECRET_KEY,
+                            { expiresIn: "4h" });
+    return res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        status_code: 200,
+        data: {
+            user: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                is_verified_email: user.is_verified_email,
+                is_verified_phone: user.is_verified_phone,
+                phone_verification_code: user.phone_verification_code,
+                email_verification_code: user.email_verification_code,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                __v: user.__v
+            },
+            token
+        }
+    });
+});
+
+router.post("/admin-login", async (req, res) => {
+    const { error } = validateLogin(req.body);
+    if(error) return res.status(400).json({
+        success: false,
+        message: error.details[0].message,
+        status_code: 400
+    });
+
+    let user = await User.findOne({ email: req.body.email });
+    if(!user) return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+        status_code: 400
+    });
+    if(!user.roles.includes("admin")){
+        return res.status(400).json({
+            success: false,
+            message: "Invalid email or password",
+            status_code: 400
+        });
+    }
+    if(!user.password) {
+        try {
+            const userSocialAccount = await UserSocialAccount.findOne({ user: user._id });
+            const authProvider = userSocialAccount.provider === "google" ? "Google" : "Facebook";
+            return res.status(400).json({
+                success: false,
+                message: `This account is linked to your ${authProvider} account. Please log in with ${authProvider} instead of using a password.`,
+                status_code: 400
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error",
+                status_code: 500
+            });
+        }
+    }
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if(!validPassword) return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+        status_code: 400
+    });     
+
+    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone, name: user.name }, 
                             process.env.JWT_SECRET_KEY,
                             { expiresIn: "4h" });
     return res.status(200).json({
@@ -204,5 +278,102 @@ router.get(
         return res.redirect(`${process.env.FRONTEND_URL}/?token=${token}&authType=facebook`);
     }
 );
+
+//forget password
+router.post('/forget-password', async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(404).json(
+            {
+                success: false,
+                message: "User not found",
+                status_code: 404
+            }
+        );
+    }
+    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+    const passwordReset = new PasswordReset({
+        email: user.email,
+        token: token,
+        userType: user.user_type
+    });
+    await passwordReset.save();
+
+    const html = renderTemplate('reset-password', { resetLink });
+    try{
+        let to = process.env.LOCAL_EMAIL;
+        if(process.env.NODE_ENV === "production"){
+            to = user.email;
+        }
+        await sendEmail({
+            to: to,
+            subject: 'Reset Password',
+            html: html
+        });
+        return res.status(200).json({
+            success: true,
+            message: 'Reset password email sent',
+            status_code: 200
+        });
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            status_code: 500
+        });
+    }
+});
+
+router.post('/reset-password', async (req, res) => {
+    const { token, newPassword } = req.body;
+    try{
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = await User.findOne({ email: decoded.email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+                status_code: 404
+            });
+        }
+
+        //check if token is here
+        const passwordReset = await PasswordReset.findOne({ token: token, email: decoded.email });
+        if(!passwordReset){
+            return res.status(404).json({
+                success: false,
+                message: "Invalid or expired token",
+                status_code: 404
+            });
+        }
+
+        //hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        await User.updateOne({ email: decoded.email }, { $set: { password: hashedPassword } });
+
+        
+        //expire token
+        await PasswordReset.deleteOne({ token: token, email: decoded.email });
+        
+        return res.status(200).json({
+            success: true,
+            message: 'Password reset successful',
+            status_code: 200
+        });
+    }catch(error){
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: 'invalid or expired token, Please request a new reset password link',
+            status_code: 400
+        });
+    }
+});
+
 
 module.exports = router;

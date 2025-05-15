@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserManagement.css';
+import axios from 'axios';
 
+const apiURL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 const UserManagement = () => {
-    const users = [
-        { name: 'Patrick Obiri', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Jane Cooper', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Leslie Alexander', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Esther Howard', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Jenny Wilson', email: 'debra.holt@example.com', role: 'Buyer', status: 'Offline' },
-        { name: 'Leslie Alexander', email: 'debra.holt@example.com', role: 'Seller', status: 'Suspended' },
-        { name: 'Guy Hawkins', email: 'debra.holt@example.com', role: 'Seller', status: 'Active' },
-        { name: 'Dianne Russell', email: 'debra.holt@example.com', role: 'Seller', status: 'Offline' },
-        { name: 'Robert Fox', email: 'debra.holt@example.com', role: 'Seller', status: 'Suspended' },
-        { name: 'Patrick Obiri', email: 'debra.holt@example.com', role: 'Buyer', status: 'Offline' },
-        { name: 'Jacob Jones', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Patrick Obiri', email: 'debra.holt@example.com', role: 'Seller', status: 'Suspended' },
-        { name: 'Ronald Richards', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Bessie Cooper', email: 'debra.holt@example.com', role: 'Buyer', status: 'Offline' },
-        { name: 'Jane Cooper', email: 'debra.holt@example.com', role: 'Buyer', status: 'Active' },
-        { name: 'Darrell Steward', email: 'debra.holt@example.com', role: 'Seller', status: 'Active' },
-        { name: 'Jerome Bell', email: 'debra.holt@example.com', role: 'Seller', status: 'Offline' },
-        { name: 'Bessie Cooper', email: 'debra.holt@example.com', role: 'Seller', status: 'Offline' },
-    ];
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(`${apiURL}/api/admin/users`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+                    }
+                });
+                setUsers(response.data.data);
+            } catch (error) {
+                setError(error);
+                
+            }
+        };
+        fetchUsers();
+    }, []);
 
     const disputeCases = [
       { name: 'Oparah Helen', content: 'The Case id: IRB#037 for patient Aaron-James of ge... from Irregular heartbeat and Shortness of breath The Case id: IRB#037 for patient Aaron-James of ge... from Irregular heartbeat and Shortness of breath.....'},
@@ -36,32 +38,38 @@ const UserManagement = () => {
           <h3>User Management</h3>
         </div>
         <div className="table-container">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Users</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, idx) => (
-                <tr key={idx}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <select name="" id="">
-                      <option value="Offline" selected={user.status === "Offline"}>Offline</option>
-                      <option value="Active" selected={user.status === "Active"}>Active</option>
-                      <option value="Suspended" selected={user.status === "Suspended"}>Suspended</option>
-                    </select>
-                  </td>
+          { users.length > 0 ?
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Users</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  {/* <th>Status</th> */}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((user, idx) => (
+                  <tr key={idx}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.roles.includes("seller") ? "Seller" : user.roles.includes("admin") ? "Admin" : "Buyer"}</td>
+                    {/* <td>
+                      <select name="" id="">
+                        <option value="Offline" selected={user.status === "Offline"}>Offline</option>
+                        <option value="Active" selected={user.status === "Active"}>Active</option>
+                        <option value="Suspended" selected={user.status === "Suspended"}>Suspended</option>
+                      </select>
+                    </td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            :
+            <div className="no-users-container" style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%", padding: "2rem"}}>
+              <p>No users found</p>
+            </div>
+          }
         </div>
   
         <div className="case-dispute-container">

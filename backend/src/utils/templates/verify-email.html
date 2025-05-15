@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your ReSell Pro Email</title>
+  <style>
+    /* Basic styles for email client compatibility */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4; /* Light background for the email body */
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 30px;
+      background-color: #ffffff; /* White background for content */
+      border: 1px solid #dddddd;
+      border-radius: 5px;
+    }
+    h2 {
+      color: #004a99; /* A potential ReSell Pro brand color (adjust as needed) */
+      margin-top: 0;
+    }
+    .code-block {
+      font-size: 32px; /* Larger font for the code */
+      font-weight: bold;
+      text-align: center;
+      margin: 25px 0;
+      padding: 15px;
+      background-color: #e9ecef; /* Light grey background for code block */
+      border-radius: 4px;
+      letter-spacing: 4px; /* Space out digits */
+      color: #1a1a1a; /* Darker color for the code itself */
+    }
+    p {
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .footer {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #eeeeee;
+      font-size: 0.9em;
+      color: #555555;
+      text-align: center;
+    }
+     a {
+       color: #004a99; /* Link color matching the heading */
+       text-decoration: none; /* Optional: remove underline */
+     }
+     a:hover {
+       text-decoration: underline;
+     }
+     .brand-name {
+       font-weight: bold;
+     }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Hello {{name}}, Let's Verify Your Email!</h2>
+
+    <p>Thanks for signing up with <span class="brand-name">ReSell Pro</span>! To finish setting up your account and ensure it stays secure, please use the following verification code:</p>
+
+    <div class="code-block">
+      {{code}}
+    </div>
+
+    <p>Please enter this 4-digit code on the verification page on our website or app. Note that this code is time-sensitive and will expire shortly.</p>
+
+    <p>Verifying your email helps us protect your account and ensures you receive important updates about your shipments, tracking information, and other <span class="brand-name">ReSell Pro</span> services.</p>
+
+    <div class="footer">
+      <p>If you didn't request this verification, you can safely ignore this email. Your account remains secure.</p>
+      <p>Need help? Contact <span class="brand-name">ReSell Pro</span> Support. </p>
+      <p><span class="brand-name">ReSell Pro</span> | Streamlining Your Shipments</p>
+      </div>
+  </div>
+</body>
+</html>
