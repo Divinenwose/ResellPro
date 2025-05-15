@@ -72,6 +72,44 @@ This document provides an overview of the API endpoints available in the ReSellP
     ```
   - **400 Bad Request**: Invalid email or password.
 
+### POST /api/auth/admin-login
+
+- **Description**: Log in an admin user.
+- **Request Body**:
+  ```json
+  {
+    "email": "john@example.com",
+    "password": "password123",
+    "role": "admin"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "success": true,
+      "message": "User logged in successfully",
+      "status_code": 200,
+      "data": {
+        "user": {
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": "",
+          "role": "buyer",
+          "is_verified_email": true,
+          "is_verified_phone": false,
+          "phone_verification_code": null,
+          "email_verification_code": null,
+          "created_at": "2025-03-10T21:56:42.443Z",
+          "updated_at": "2025-03-10T21:56:42.443Z",
+          "__v": 0
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+    ```
+  - **400 Bad Request**: Invalid email or password.
+
 ### POST /api/auth/logout
 
 - **Description**: Log out the current user.

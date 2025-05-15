@@ -9,8 +9,6 @@ import { useAuth } from "../../App";
 const Dashboard = () => {
     const [selectedTab, setSelectedTab] = useState("main");
     let windowWidth = window.innerWidth;
-    const { auth } = useAuth();
-    console.log(auth);
   return (
     <div style={{display: "flex", flexDirection: "column", minHeight: "100vh", position: "relative"}}>
         <div className="admin-dashboard-container">
