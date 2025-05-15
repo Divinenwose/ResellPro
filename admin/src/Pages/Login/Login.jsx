@@ -43,7 +43,7 @@ const Login = () => {
               isAdmin = true;
             }
             setAuth({ token: storedToken, isAuthenticated: true, isAdmin, name: decodedToken.name });
-
+            navigate("/dashboard");
         } catch (error) {
           toast.error(error.response?.data?.message || "Something went wrong");
           localStorage.removeItem("adminToken");
