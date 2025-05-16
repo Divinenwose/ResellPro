@@ -1,7 +1,7 @@
 import React from "react";
 import "./MainDashBoard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faFile, faDollarSign, faCheckSquare, faTimesSquare } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faFile, faDollarSign, faCheckSquare, faTimesSquare, faNairaSign } from "@fortawesome/free-solid-svg-icons";
 import kettle from "../../assets/kettle.jpeg";
 import DonutChart from "../../components/DonutChart/DonutChart";
 import GradientAreaChart from "../../components/GradientAreaChart/GradientAreaChart";
@@ -39,7 +39,7 @@ const MainDashboard = () => {
                 </div>
                 <div className="stats-card">
                     <div className="stats-card-icon">
-                        <FontAwesomeIcon icon={faDollarSign} />
+                        <FontAwesomeIcon icon={faNairaSign} />
                     </div>
                     <h4>Total Sales</h4>
                     <p>250k</p>

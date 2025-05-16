@@ -1,7 +1,7 @@
 import React from 'react';
 import './Transactions.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faFile, faDollarSign, faHandshake, faCheckSquare, faTimesSquare } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faFile, faNairaSign, faHandshake, faCheckSquare, faTimesSquare } from "@fortawesome/free-solid-svg-icons";
 import smilingGirl from "../../assets/smilingGirl.png";
 import smilingMan from "../../assets/smilingMan.png";
 import DonutChart from "../../components/DonutChart/DonutChart";
@@ -37,7 +37,7 @@ const Transactions = () => {
             <div className="stats-cards">
                 <div className="stats-card">
                     <div className="stats-card-icon">
-                        <FontAwesomeIcon icon={faDollarSign} />
+                        <FontAwesomeIcon icon={faNairaSign} />
                     </div>
                     <h4>Total Sales</h4>
                     <p>150k</p>
@@ -51,7 +51,7 @@ const Transactions = () => {
                 </div>
                 <div className="stats-card">
                     <div className="stats-card-icon">
-                        <FontAwesomeIcon icon={faDollarSign} />
+                        <FontAwesomeIcon icon={faNairaSign} />
                     </div>
                     <h4>Overall Sales</h4>
                     <p>250k</p>
