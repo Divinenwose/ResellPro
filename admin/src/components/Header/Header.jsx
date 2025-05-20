@@ -83,6 +83,11 @@ const Header = ({tab, setTab}) => {
                                             Transactions
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#" onClick={() => setTab("product-categories")}>
+                                            Product Categories
+                                        </a>
+                                    </li>
                                     </>
                                 )
                             }
