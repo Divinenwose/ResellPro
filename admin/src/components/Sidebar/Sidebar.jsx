@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faMoneyBill, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faMoneyBill, faCreditCard, faBox } from '@fortawesome/free-solid-svg-icons';
 import "./Sidebar.css";
 import Logo from "../../assets/Logo.png";
 import Avatar from "../../assets/adminAvatar.png";
@@ -29,6 +29,12 @@ const Sidebar = ({tab, setTab}) => {
             text: "Transactions",
             link: "/admin-dashboard/transactions",
             name: "transactions"
+        },
+        {
+            icon: faBox,
+            text: "Product Categories",
+            link: "/admin-dashboard/product-categories",
+            name: "product-categories"
         }
     ]
     return (

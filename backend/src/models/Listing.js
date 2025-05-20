@@ -82,13 +82,7 @@ const validateListing = (listing) => {
         title: Joi.string().required(),
         description: Joi.string().required(),
         price: Joi.number().min(0).required(),
-        seller_id: Joi.string()
-            .regex(objectIdPattern)
-            .required()
-            .messages({
-            "string.pattern.base": "Invalid ObjectId format. Must be a 24-character hex string.",
-            "any.required": "Seller ID is required."
-        }),
+        
         category_id: Joi.string()
             .regex(objectIdPattern)
             .required()
