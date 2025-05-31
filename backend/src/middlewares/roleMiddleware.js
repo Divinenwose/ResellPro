@@ -31,6 +31,7 @@ const roleMiddleware = (requiredRoles) => {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if (err) {
           if (err.name === "TokenExpiredError") {
+            console.log(err);
             return res.status(401).json({
               success: false,
               message: "Token expired! Please log in again.",

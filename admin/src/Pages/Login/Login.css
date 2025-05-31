@@ -1,0 +1,95 @@
+:root {
+    --primary-color: #FF9738; /* Resell Pro */
+    --background-color: #f9f9f9;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --link-color: #1E3A8A;
+    --input-border: #cccccc;
+    --button-hover: #ff8c21;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+  }
+  
+  .admin-login-container {
+    min-height: 100vh;
+    background-color: var(--background-color);
+    padding: 2rem;
+    position: relative;
+  }
+  
+  .admin-login-header {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+  }
+  
+  .admin-logo {
+    height: 50px;
+    width: auto;
+  }
+  
+  .admin-login-card {
+    max-width: 400px;
+    margin: 8rem auto 0 auto;
+    background-color: var(--card-color);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .admin-login-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  .admin-login-card p {
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .admin-login-card form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin-login-card input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .admin-login-card button {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .admin-login-card button:hover {
+    background-color: var(--button-hover);
+  }
+  
+  .forgot-link {
+    margin-top: 1rem;
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  .forgot-link:hover {
+    text-decoration: underline;
+  }
+  
+  

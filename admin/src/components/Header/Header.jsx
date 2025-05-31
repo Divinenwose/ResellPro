@@ -4,11 +4,34 @@ import { Link } from 'react-router-dom';
 import "./Header.css";
 import { faBell, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../assets/Logo.png";
+import axios from "axios";
+import { toast } from "react-toastify";
 
+const apiURL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 const Header = ({tab, setTab}) => {
+    
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
     let windowWidth = window.innerWidth;
+    
+    const handleLogout = async (e) => {
+        try {
+            const url = "/api/auth/logout";
+            const payload = {
+                token: localStorage.getItem("adminToken"),
+            };
+
+            const response = await axios.post(`${apiURL}${url}`, payload, {
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },
+            });
+            localStorage.removeItem("adminToken");
+            toast.success("Logout successful!");
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Something went wrong");
+        }
+    };
     return (
         <div className="content-header">
             <div className="content-header-left">
@@ -60,11 +83,16 @@ const Header = ({tab, setTab}) => {
                                             Transactions
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#" onClick={() => setTab("product-categories")}>
+                                            Product Categories
+                                        </a>
+                                    </li>
                                     </>
                                 )
                             }
                             <li><a href="#">Profile</a></li>
-                            <li><a href="#">Logout</a></li>
+                            <li style={{cursor: "pointer"}} onClick={handleLogout}>Logout</li>
                         </ul>
                     </div>
                 )}

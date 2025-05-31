@@ -1,0 +1,17 @@
+# Serve JS files with correct MIME
+/assets/*.js
+  Content-Type: application/javascript
+
+# Serve CSS files with correct MIME
+/assets/*.css
+  Content-Type: text/css
+
+# Serve images properly 
+/assets/*.png
+  Content-Type: image/png
+/assets/*.jpg
+  Content-Type: image/jpeg
+/assets/*.jpeg
+  Content-Type: image/jpeg
+/assets/*.svg
+  Content-Type: image/svg+xml

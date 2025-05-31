@@ -121,7 +121,78 @@ router.post("/login", async (req, res) => {
         status_code: 400
     });     
 
-    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone }, 
+    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone, name: user.name }, 
+                            process.env.JWT_SECRET_KEY,
+                            { expiresIn: "4h" });
+    return res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        status_code: 200,
+        data: {
+            user: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                is_verified_email: user.is_verified_email,
+                is_verified_phone: user.is_verified_phone,
+                phone_verification_code: user.phone_verification_code,
+                email_verification_code: user.email_verification_code,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                __v: user.__v
+            },
+            token
+        }
+    });
+});
+
+router.post("/admin-login", async (req, res) => {
+    const { error } = validateLogin(req.body);
+    if(error) return res.status(400).json({
+        success: false,
+        message: error.details[0].message,
+        status_code: 400
+    });
+
+    let user = await User.findOne({ email: req.body.email });
+    if(!user) return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+        status_code: 400
+    });
+    if(!user.roles.includes("admin")){
+        return res.status(400).json({
+            success: false,
+            message: "Invalid email or password",
+            status_code: 400
+        });
+    }
+    if(!user.password) {
+        try {
+            const userSocialAccount = await UserSocialAccount.findOne({ user: user._id });
+            const authProvider = userSocialAccount.provider === "google" ? "Google" : "Facebook";
+            return res.status(400).json({
+                success: false,
+                message: `This account is linked to your ${authProvider} account. Please log in with ${authProvider} instead of using a password.`,
+                status_code: 400
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error",
+                status_code: 500
+            });
+        }
+    }
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if(!validPassword) return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+        status_code: 400
+    });     
+
+    const token = jwt.sign({ _id: user._id, roles: user.roles, email: user.email, phone: user.phone, name: user.name }, 
                             process.env.JWT_SECRET_KEY,
                             { expiresIn: "4h" });
     return res.status(200).json({
