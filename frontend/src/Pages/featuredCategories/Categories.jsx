@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { CartContext } from "../../CartContext";
 import "./Categories.css";
-import Hero from "../../components/Hero/Hero";
 import SearchBar from "../../components/Searchbar/Searchbar";
 import phoneIcon from "../../assets/phone.png";
 import kitchenIcon from "../../assets/kitchen_icon.png";
@@ -20,6 +20,9 @@ import item8 from "../../assets/item8.png";
 import item9 from "../../assets/item9.png";
 import item10 from "../../assets/item10.png";
 import Footer from "../../components/Footer/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const featuredCategories = [
   { name: "Phones & Accessories", icon: phoneIcon },
@@ -63,6 +66,8 @@ const CategoriesPage = () => {
   const [priceFilter, setPriceFilter] = useState({ min: "", max: "" });
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [selectedMoreOptions, setSelectedMoreOptions] = useState([]);
+  const { addToCart } = useContext(CartContext);
+
 
   const handlePriceRangeChange = (range) => {
     setSelectedPriceRanges((prevRanges) =>
@@ -100,10 +105,12 @@ const CategoriesPage = () => {
 
   return (
     <div className="container">
-      <div className="hero-container">
-        <Hero />
-        <SearchBar />
+      <div className="featured-hero-container">
+        
       </div>
+      <div className="searchbar-container">
+          <SearchBar />
+        </div>
       <div className="container-content">
         <aside className="sidebar">
           <div className="featured-categories-container">
@@ -157,7 +164,19 @@ const CategoriesPage = () => {
                 <img src={product.image} alt={product.name} className="product-image" />
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-price">₦{product.price.toLocaleString()}</p>
-                <button className="categories-btn">Add to Cart</button> 
+                <button 
+                  className="categories-btn" 
+                  onClick={() => {
+                    try {
+                      addToCart(product);
+                      toast.success(`${product.name} added to cart!`);
+                    } catch (error) {
+                      toast.error("Failed to add to cart.");
+                    }
+                  }}
+                  >
+                    Add to Cart
+                </button>
               </div>
             ))
           ) : (

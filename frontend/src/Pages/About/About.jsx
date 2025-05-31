@@ -19,8 +19,7 @@ const AboutUs = () => {
         <div className="hero-text">
           <h1>Connect and Trade Sustainably</h1>
           <p>
-            Join a community where buyers and sellers interact, offering new,
-            used, and recycled products.
+            Join a community where buyers and sellers interact, offering used and recycled products.
           </p>
           <button className="btn-primary">Browse Our Marketplace</button>
           <div className="stats">

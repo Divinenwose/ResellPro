@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css"
 import Hero from "../../components/Hero/Hero";
-import SearchBar from "../../components/Searchbar/Searchbar";
 import ListedProject from "../../components/ListedProject/ListedProject";
 import Footer from "../../components/Footer/Footer";
 import { jwtDecode } from "jwt-decode";
@@ -36,7 +35,6 @@ const HomePage = () => {
     return(
         <div className="Home">
             <Hero />
-            <SearchBar />
             <ListedProject />
             <Footer />
         </div>

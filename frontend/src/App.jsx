@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./Pages/Home/Home";
 import RecycledPage from "./Pages/Recycled/recycled";
 import CategoriesPage from "./Pages/featuredCategories/Categories";
+import ProductDetail from "./Pages/ProductDetail/ProductDetail";
 import Cart from "./Pages/Cart/Cart";
 import AboutUs from "./Pages/About/About";
 import ProtectedRoute from "./components/RouteProtection/ProtectedRoute";
@@ -33,7 +34,6 @@ const App = () => {
           const decodedToken = jwtDecode(storedToken);
           const currentTime = Date.now() / 1000;
           if (decodedToken.exp < currentTime) {
-            // Token expired, log out user
             localStorage.removeItem("token");
             setAuth({ token: null, isAuthenticated: false, isSeller: false, isBuyer: false });
             window.location.reload();
@@ -74,6 +74,7 @@ const App = () => {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/recycled" element={<RecycledPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/product-detail" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/403" element={<Page403 />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

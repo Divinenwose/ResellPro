@@ -36,7 +36,7 @@
     border-bottom-right-radius: 50%;
     position: absolute;
     right: -40px;
-    top: -120px;
+    top: -90px;
   }
   
 
@@ -68,11 +68,11 @@
   }
   
   .marketplace-text h2 {
-    font-size: 40px;
+    font-size: 32px;
     color: #2F2F2F;
     width: 656px;
     font-family: Montserrat;
-    margin-top: 240px;
+    margin-top: 20px;
     font-weight: 600;
   }
   
@@ -88,7 +88,7 @@
   .marketplace-images {
     display: flex;
     gap: 10px;
-    margin-left: 20px;
+    margin-left: 80px;
   }
   
   .marketplace-images img {

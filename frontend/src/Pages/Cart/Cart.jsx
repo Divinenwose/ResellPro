@@ -58,10 +58,10 @@ const Cart = () => {
                 .toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
-            <div className="cart-row">
+            {/*<div className="cart-row">
               <span>Delivery Fee</span>
               <span className="amount">₦2.00</span>
-            </div>
+            </div>*/}
             <div className="cart-row total">
               <span>Total</span>
               <span className="amount">

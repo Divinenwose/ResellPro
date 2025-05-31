@@ -91,7 +91,6 @@
 .auth-container input, .auth-container textarea {
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
     border: 1px solid #A9A5A5;
     border-radius: 5px;
 }
@@ -102,7 +101,26 @@
     line-height: 20.48px;
     letter-spacing: 0%;
 }
-  
+
+
+.password {
+  position: relative;
+}
+
+.forgot-password  {
+  position: absolute;
+  bottom: 260px;  
+  left: 29px;
+  font-size: 10px;  
+  color: #007bff;  
+  cursor: pointer;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+
 .auth-container .auth-btn {
     background: #ff8038;
     color: white;
@@ -113,7 +131,7 @@
     width: 300px;
     border-radius: 5px;
     display: block;
-    margin: 6px auto;
+    margin: 19px auto;
     font-family: Montserrat;
     font-weight: bold;
     line-height: 20.48px;

@@ -15,6 +15,7 @@ import image10 from "../../assets/item9.png";
 import image11 from "../../assets/item10.png";
 import image12 from "../../assets/item21.png";
 import lowersection from "../../assets/lower_section.png";
+import SearchBar from "../../components/Searchbar/Searchbar";
 
 const statesInNigeria = [
   "All states", "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River",
@@ -86,6 +87,9 @@ const ListedProject = () => {
             </select>
           </div>
         </div>
+      </div>
+      <div className="searchbar-wrapper">
+        <SearchBar  />
       </div>
       <div className="grid">
         {listedItems

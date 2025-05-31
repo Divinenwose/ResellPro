@@ -17,6 +17,7 @@ const Navbar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [authAction, setAuthAction] = useState("signup");
+  const [userType, setUserType] = useState(localStorage.getItem("userType") || "buyer");
 
   const dropdownRef = useRef(null);
   const navRef = useRef(null);
@@ -24,7 +25,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setIsLoggedIn(true);
+    const storedUserType = localStorage.getItem("userType");
+    if (token) {
+      setIsLoggedIn(true);
+      setUserType(storedUserType || "buyer");
+    }
   }, []);
 
   useEffect(() => {
@@ -53,10 +58,12 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (type) => {
     setIsLoggedIn(true);
     setIsAuthOpen(false);
+    setUserType(type);
     localStorage.setItem("token", "dummy_token");
+    localStorage.setItem("userType", type);
   };
 
   const handleLogout = async (e) => {
@@ -72,6 +79,7 @@ const Navbar = () => {
       setIsLoggedIn(false);
       setIsDropdownOpen(false);
       localStorage.removeItem("token");
+      localStorage.removeItem("userType");
       toast.success("Logout successful!");
       window.location.reload();
     } catch (error) {
@@ -80,6 +88,27 @@ const Navbar = () => {
     }
   };
   
+  const renderDropdownOptions = () => {
+    if (userType === "seller") {
+      return (
+        <>
+          <li>
+            <Link to="/seller-profile">Profile</Link>
+          </li>
+          <li onClick={handleLogout}>Sign Out</li>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <li>
+            <Link to="/dashboard">Orders</Link>
+          </li>
+          <li onClick={handleLogout}>Sign Out</li>
+        </>
+      );
+    }
+  };
 
   return (
     <nav className="navbar" ref={navRef}>
@@ -142,10 +171,7 @@ const Navbar = () => {
             </span>
             <div className="drop-down-container">
               <ul className={`dropdown ${isDropdownOpen ? "active" : ""}`}>
-                <li>
-                  <Link to="/dashboard">Orders</Link>
-                </li>
-                <li onClick={handleLogout}>Sign Out</li>
+                {renderDropdownOptions()}
               </ul>
             </div>
           </div>
