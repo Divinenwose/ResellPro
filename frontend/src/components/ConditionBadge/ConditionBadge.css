@@ -1,0 +1,26 @@
+.condition-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    width:fit-content;
+}
+
+.condition-badge.new {
+    background-color: #28a745;
+    color: #fff;
+}
+
+
+.condition-badge.used {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.condition-badge.like_new {
+    background-color: #b4d61c;
+    color: #fff;
+}
+
+
+

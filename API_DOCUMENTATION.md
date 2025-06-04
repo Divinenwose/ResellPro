@@ -274,6 +274,7 @@ This document provides an overview of the API endpoints available in the ReSellP
     - `isEcoFriendly`: Boolean
     - `autoRelist`: Boolean
     - `images`: Array of image files (JPEG, PNG, WEBP)
+    - `location`: String
 - **Response**:
   - **201 Created**:
     ```json
