@@ -10,6 +10,7 @@ import view_icon from "../../assets/view_icon.png";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ConditionBadge from "../../components/ConditionBadge/ConditionBadge";
 
 const SellerProfile = () => {
   const { auth } = useAuth();
@@ -30,8 +31,8 @@ const SellerProfile = () => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [itemDescription, setItemDescription] = useState("");
+  const [itemName, setItemName] = useState("");
   const [condition, setCondition] = useState("");
-  const [deliveryOption, setDeliveryOption] = useState("");
   const [location, setLocation] = useState("");
 
   const fileInputRef = useRef(null);
@@ -81,22 +82,19 @@ const SellerProfile = () => {
         const response = await axios.get(`${apiURL}/api/listings`, {
           headers: { Authorization: `Bearer ${auth.token}` },
           params: {
-            limit: 100
-          }
+            limit: 100,
+            seller: auth.userId,
+          },
         });
-        
-        const sellerListings = response.data.data.filter(
-          listing => listing.seller._id === auth.userId
-        );
-        
-        setPublishedItems(sellerListings);
+        console.log(response.data.data[0]);
+        setPublishedItems(response.data.data);
       } catch (error) {
         console.error("Error fetching listings:", error);
         toast.error("Failed to load published items");
       } finally {
         setIsLoading(false);
       }
-    };
+    };    
 
     fetchCategories();
     fetchSellerProfile();
@@ -125,6 +123,10 @@ const SellerProfile = () => {
   };
 
   const validateForm = () => {
+    if (!itemName) {
+      toast.error("Please provide an item name");
+      return false;
+    }
     if (!itemDescription) {
       toast.error("Please provide a description");
       return false;
@@ -160,10 +162,10 @@ const SellerProfile = () => {
     setIsLoading(true);
     
     const formData = new FormData();
+    formData.append("title", itemName);
     formData.append("description", itemDescription);
     formData.append("price", price);
     formData.append("condition", condition);
-    formData.append("deliveryOption", deliveryOption);
     formData.append("location", location);
     formData.append("category_id", category);
     formData.append("isEcoFriendly", condition === "Recycled Goods" ? "true" : "false");
@@ -179,21 +181,23 @@ const SellerProfile = () => {
         },
       });
 
-      toast.success("Listing published successfully!");
       setPublishedItems((prev) => [response.data.data, ...prev]);
-      
+      const publishedItemsElement = document.querySelector('.items-published');
+      if (publishedItemsElement) {
+        publishedItemsElement.scrollIntoView({ behavior: 'smooth' });
+      }
+      toast.success("Listing published successfully!");
       // Reset form
+      setItemName("");
       setItemDescription("");
       setPrice("");
       setCategory("");
       setCondition("");
-      setDeliveryOption("");
       setLocation("");
       setImagePreviews([]);
       setImages([]);
     } catch (error) {
-      console.error("Error submitting listing:", error);
-      const errorMessage = error.response?.data?.message || "Failed to publish listing";
+      const errorMessage = error.response?.data?.message ?? "Failed to publish listing";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -286,7 +290,7 @@ const SellerProfile = () => {
         ) : (
           <div className="items-grid">
             {publishedItems.slice(0, 4).map((item) => (
-              <div key={item._id} className="item-card">
+              <div key={item._id} className={`item-card ${!item.images || item.images.length < 1 ? "no-image" : ""}`}>
                 {item.images && item.images.length > 0 && (
                   <img 
                     src={item.images[0].image_url} 
@@ -294,10 +298,15 @@ const SellerProfile = () => {
                     className="item-image"
                   />
                 )}
-                <h3>{item.title || item.description.substring(0, 30)}</h3>
-                <p>₦{item.price}</p>
-                <p className="item-description">{item.description.substring(0, 60)}...</p>
-                <p className="item-condition">{item.condition}</p>
+                <div className="item-details">
+                  <h3 style={{textAlign: "center"}}>{item.title}</h3>
+                  <p><i>₦{item.price}</i></p>
+                  <p className="item-description">{item.description.substring(0, 60)}...</p>
+                </div>
+                {item.condition && 
+                <div className="condition-badge-container">
+                  <ConditionBadge condition={item.condition} />
+                </div>}
               </div>
             ))}
           </div>
@@ -363,7 +372,7 @@ const SellerProfile = () => {
 
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg, image/png, image/webp"
           multiple
           ref={fileInputRef}
           onChange={handleImageChange}
@@ -391,14 +400,25 @@ const SellerProfile = () => {
         </div>
 
         <form className="publish-form" onSubmit={handleSubmit}>
-          <label>Description</label>
-          <textarea
-            placeholder="Product description"
-            value={itemDescription}
-            onChange={(e) => setItemDescription(e.target.value)}
-            required
-          ></textarea>
-
+          <div>
+            <label>Item name</label>
+            <input
+              type="text"
+              placeholder="Item name"
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Description</label>
+            <textarea
+              placeholder="Product description"
+              value={itemDescription}
+              onChange={(e) => setItemDescription(e.target.value)}
+              required
+            ></textarea>
+          </div>
           <div className="pricing-flex">
             <div className="input-group">
               <label>Pricing</label>
@@ -420,8 +440,8 @@ const SellerProfile = () => {
                 <label>
                 <input
                   type="radio"
-                  value="Brand New"
-                  checked={condition === "Brand New"}
+                  value="new"
+                  checked={condition === "new"}
                   onChange={(e) => setCondition(e.target.value)}
                   required
                 />
@@ -430,8 +450,8 @@ const SellerProfile = () => {
                 <label>
                   <input
                     type="radio"
-                    value="Recycled Goods"
-                    checked={condition === "Recycled Goods"}
+                    value="like_new"
+                    checked={condition === "like_new"}
                     onChange={(e) => setCondition(e.target.value)}
                   />
                   Recycled Goods
@@ -439,8 +459,8 @@ const SellerProfile = () => {
                 <label>
                   <input
                     type="radio"
-                    value="Used"
-                    checked={condition === "Used"}
+                    value="used"
+                    checked={condition === "used"}
                     onChange={(e) => setCondition(e.target.value)}
                   />
                   Used
@@ -463,16 +483,6 @@ const SellerProfile = () => {
                   </option>
                 ))}
               </select>
-            </div>
-
-            <div className="input-group">
-              <label>Delivery Option</label>
-              <input
-                type="text"
-                placeholder="Delivery option"
-                value={deliveryOption}
-                onChange={(e) => setDeliveryOption(e.target.value)}
-              />
             </div>
 
             <div className="input-group">

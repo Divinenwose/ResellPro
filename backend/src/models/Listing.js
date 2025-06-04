@@ -38,6 +38,10 @@ const listingSchema = new mongoose.Schema({
         required: true,
         enum: ["new", "used", "like_new"]
     },
+    location: {
+        type: String,
+        required: true
+    },
     isEcoFriendly: {
         type: Boolean,
         default: false
@@ -79,10 +83,10 @@ const objectIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const validateListing = (listing) => {
     const schema = Joi.object({
-        title: Joi.string().required(),
-        description: Joi.string().required(),
+        title: Joi.string().required().min(3).max(255),
+        description: Joi.string().required().min(3).max(255),
         price: Joi.number().min(0).required(),
-        
+        location: Joi.string().required(),
         category_id: Joi.string()
             .regex(objectIdPattern)
             .required()
